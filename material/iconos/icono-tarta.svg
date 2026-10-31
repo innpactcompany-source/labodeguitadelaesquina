@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" width="24" height="24" role="img" aria-label="Porción de tarta">
+  <path d="M1.4 8.6 H8.6 V5.4 L1.4 3.6 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1.4 6.4 L8.6 6.9" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="7.4" cy="2.6" r="0.85" fill="currentColor"/>
+</svg>

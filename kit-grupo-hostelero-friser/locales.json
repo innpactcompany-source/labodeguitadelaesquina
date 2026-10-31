@@ -1,0 +1,50 @@
+{
+  "grupo": "Grupo Hostelero Friser",
+  "ruta_ir": "/ir/<slug>",
+  "locales": [
+    {
+      "slug": "la-bodeguita",
+      "nombre": "La Bodeguita de la Esquina",
+      "direccion": "C/ Benicarló, 25",
+      "icono": "copa",
+      "icono_archivo": "icono-la-bodeguita.svg",
+      "dominio": "labodeguitadelaesquina.com",
+      "web_activa": true,
+      "place_id": "ChIJ10m2YSxHYA0R3iMZo7EyFII",
+      "destino_ir": "https://labodeguitadelaesquina.com/"
+    },
+    {
+      "slug": "pub-colonial",
+      "nombre": "Pub Colonial",
+      "direccion": "C/ Doctor Vicent Zaragoza, 3",
+      "icono": "jarra",
+      "icono_archivo": "icono-pub-colonial.svg",
+      "dominio": "pubcolonial.com",
+      "web_activa": false,
+      "place_id": "ChIJE1xR8adIYA0RsxBHAsRYgcg",
+      "destino_ir": "https://www.google.com/maps/search/?api=1&query=Pub+Colonial&query_place_id=ChIJE1xR8adIYA0RsxBHAsRYgcg"
+    },
+    {
+      "slug": "taberna-asturiana",
+      "nombre": "Restaurante Taberna Asturiana",
+      "direccion": "C/ Doctor Vicent Zaragoza, 1",
+      "icono": "cubiertos",
+      "icono_archivo": "icono-taberna-asturiana.svg",
+      "dominio": "tabernaasturiana.com",
+      "web_activa": false,
+      "place_id": "ChIJ7Scb9KdIYA0RFT_0ckmAVrk",
+      "destino_ir": "https://www.google.com/maps/search/?api=1&query=Restaurante+Taberna+Asturiana&query_place_id=ChIJ7Scb9KdIYA0RFT_0ckmAVrk"
+    },
+    {
+      "slug": "excalibur",
+      "nombre": "Excalibur Irish Pub",
+      "direccion": "C/ Doctor Vicent Zaragoza, 7",
+      "icono": "trébol",
+      "icono_archivo": "icono-excalibur.svg",
+      "dominio": "excaliburirishpub.com",
+      "web_activa": false,
+      "place_id": "ChIJlYhj86dIYA0RDoDQvQBS3FU",
+      "destino_ir": "https://www.google.com/maps/search/?api=1&query=Excalibur&query_place_id=ChIJlYhj86dIYA0RDoDQvQBS3FU"
+    }
+  ]
+}

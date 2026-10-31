@@ -1,0 +1,22 @@
+html { --alto-chips: 60px; scroll-padding-top: calc(var(--alto-cabecera) + 2px + var(--alto-chips) + .5rem); }
+.pagina-carta { --fuente-acento: var(--fuente-texto); }
+.carta-ancho { width: min(100% - 1.5rem, 60rem); margin-inline: auto; }
+.carta-cabecera { padding-block: .25rem 1.25rem; }
+.carta-cabecera .cartela { --cap: clamp(1rem, 4vw, 1.6rem); margin-top: .9rem; }
+.carta-cabecera h1, .carta-cabecera p { text-wrap: balance; }
+.chips { position: sticky; top: calc(var(--alto-cabecera) + 2px); z-index: 30; background: var(--color-fondo); border-bottom: 2px solid var(--color-borde); padding-block: .45rem; }
+.chips ul { position: relative; display: flex; gap: .5rem; width: min(100%, 60rem); margin-inline: auto; padding: 3px .75rem; list-style: none; overflow-x: auto; scrollbar-width: none; }
+.chips ul::-webkit-scrollbar { display: none; }
+.chip { display: inline-flex; align-items: center; min-height: 44px; padding: 0 1.1rem; border: 2px solid var(--color-oro-texto); border-radius: 999px; background: var(--color-superficie); color: var(--color-texto); font-weight: 700; white-space: nowrap; text-decoration: none; transition: background-color .2s, color .2s; }
+.chip:hover { background: var(--color-hoy); text-decoration: none; }
+.chip--activo, .chip--activo:hover { background: var(--color-boton); border-color: var(--color-boton); color: var(--crema-fija); }
+.carta-seccion { padding-block: 1.1rem; }
+.carta-seccion .marco { padding-top: 1.1rem; }
+.carta-seccion .marco__titulo { margin-bottom: .5rem; }
+.aviso-alergenos { margin: 1.25rem 0; padding: .9rem 1rem; border-left: 5px solid var(--color-oro-texto); background: var(--color-superficie); font-size: 1rem; }
+.aviso-alergenos p { margin: 0; }
+.resena-carta { margin: 1.5rem 0; padding: 1.25rem; border: 2px solid var(--color-oro); border-radius: var(--radio); background: var(--color-secundario); color: var(--crema-fija); text-align: center; }
+.resena-carta p { margin: 0 0 .9rem; font-weight: 700; font-size: 1.1rem; }
+.volver-arriba { display: flex; justify-content: center; margin-bottom: 2rem; }
+.js .chips::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 3rem; pointer-events: none; background: linear-gradient(to right, rgba(0, 0, 0, 0), var(--color-fondo)); transition: opacity .2s; }
+.chips--sin-mas::after { opacity: 0; }

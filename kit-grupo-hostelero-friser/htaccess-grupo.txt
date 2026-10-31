@@ -1,0 +1,11 @@
+# Redirecciones de los locales de Grupo Hostelero Friser.
+# Pega estas líneas en el .htaccess de cada web del grupo, justo después de "RewriteEngine On"
+# y antes de la regla que fuerza HTTPS y el dominio sin www.
+# Cuando un local estrene web, cambia solo su línea por su dominio (por ejemplo, https://pubcolonial.com/),
+# en las cuatro webs, y actualiza locales.json.
+# Si una web es la de uno de los locales, su propia línea /ir/ puede quedarse: no se usa en su bloque.
+
+RewriteRule ^ir/la-bodeguita/?$ https://labodeguitadelaesquina.com/ [R=302,L,NE]
+RewriteRule ^ir/pub-colonial/?$ https://www.google.com/maps/search/?api=1&query=Pub+Colonial&query_place_id=ChIJE1xR8adIYA0RsxBHAsRYgcg [R=302,L,NE]
+RewriteRule ^ir/taberna-asturiana/?$ https://www.google.com/maps/search/?api=1&query=Restaurante+Taberna+Asturiana&query_place_id=ChIJ7Scb9KdIYA0RFT_0ckmAVrk [R=302,L,NE]
+RewriteRule ^ir/excalibur/?$ https://www.google.com/maps/search/?api=1&query=Excalibur&query_place_id=ChIJlYhj86dIYA0RDoDQvQBS3FU [R=302,L,NE]

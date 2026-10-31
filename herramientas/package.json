@@ -1,0 +1,8 @@
+{
+  "name": "herramientas-fotos-platos",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Control de calidad y recorte de las fotos de platos. No se sube a Hostinger.",
+  "scripts": { "fotos": "node procesar-fotos-platos.js" },
+  "dependencies": { "sharp": "^0.35.5" }
+}

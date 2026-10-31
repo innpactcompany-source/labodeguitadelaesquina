@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" width="24" height="24" role="img" aria-label="Tarjeta">
+  <path d="M1.8 2.4 H8.2 A0.8 0.8 0 0 1 9 3.2 V6.8 A0.8 0.8 0 0 1 8.2 7.6 H1.8 A0.8 0.8 0 0 1 1 6.8 V3.2 A0.8 0.8 0 0 1 1.8 2.4 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1.2 4.3 H8.8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M2.7 6 H4.3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

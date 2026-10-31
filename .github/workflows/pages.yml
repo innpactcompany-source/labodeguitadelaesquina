@@ -1,0 +1,54 @@
+name: Publicar la web en GitHub Pages
+
+# Se ejecuta con cada subida a main y a mano desde la pestaña Actions.
+# No hay compilación: se prepara una copia de web/ (ver .github/scripts/preparar-pages.js) y se publica.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - '.github/workflows/pages.yml'
+      - '.github/scripts/preparar-pages.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Preparar la carpeta que se publica
+        env:
+          # Con el dominio propio conectado, define la variable DOMINIO en Settings > Secrets and variables > Actions > Variables
+          DOMINIO: ${{ vars.DOMINIO }}
+          BASE: /${{ github.event.repository.name }}
+        run: node .github/scripts/preparar-pages.js _site
+
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Subir el paquete
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - name: Publicar en GitHub Pages
+        id: despliegue
+        uses: actions/deploy-pages@v4

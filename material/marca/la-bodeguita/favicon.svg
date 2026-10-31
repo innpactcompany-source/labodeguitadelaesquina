@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="t">
+<title id="t">La Bodeguita de la Esquina</title>
+<defs>
+<radialGradient id="rojo" cx="0.52" cy="0.32" r="0.62"><stop offset="0" stop-color="#C1161F"/><stop offset="0.55" stop-color="#8E1219"/><stop offset="1" stop-color="#6E0B12"/></radialGradient>
+<radialGradient id="crema" cx="0.5" cy="0.42" r="0.6"><stop offset="0" stop-color="#FFFCF2"/><stop offset="1" stop-color="#ECE3C8"/></radialGradient>
+<linearGradient id="oroLetra" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0DCA8"/><stop offset="0.55" stop-color="#E0C78C"/><stop offset="1" stop-color="#B99A55"/></linearGradient>
+</defs>
+<rect x="0" y="0" width="64" height="64" rx="12" fill="url(#rojo)"/>
+<rect x="2.5" y="2.5" width="59" height="59" rx="10" fill="none" stroke="#C9A85C" stroke-width="1.6"/>
+<ellipse cx="32" cy="32" rx="23.5" ry="15.5" fill="#9C7A2E"/>
+<ellipse cx="32" cy="32" rx="22.3" ry="14.3" fill="#C9A85C"/>
+<ellipse cx="32" cy="32" rx="20.6" ry="12.7" fill="#F4EEDB"/>
+<g transform="translate(32.00 32.00) rotate(-35)"><ellipse cx="0" cy="0" rx="11.16" ry="7.13" fill="#1A1410"/><path d="M-9.60 1.40 C-3.35 -4.03 3.35 4.03 9.60 -1.40" fill="none" stroke="#F4EEDB" stroke-width="1.78" stroke-linecap="round"/></g>
+</svg>

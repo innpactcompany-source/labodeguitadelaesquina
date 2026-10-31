@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" width="24" height="24" role="img" aria-label="Wifi">
+  <path d="M1.5 4.9 A4.9 4.9 0 0 1 8.5 4.9" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M3.15 6.6 A2.55 2.55 0 0 1 6.85 6.6" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="5" cy="8.3" r="0.8" fill="currentColor"/>
+</svg>

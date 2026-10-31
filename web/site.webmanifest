@@ -1,0 +1,23 @@
+{
+  "name": "La Bodeguita de la Esquina",
+  "short_name": "La Bodeguita",
+  "description": "Desayunos y almuerzos en Benimaclet, Valencia.",
+  "lang": "es-ES",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F6F0E3",
+  "theme_color": "#8E1219",
+  "icons": [
+    {
+      "src": "/assets/marca/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/marca/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

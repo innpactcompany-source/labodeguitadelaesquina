@@ -1,0 +1,25 @@
+/* ---------- Bloque Grupo Hostelero Friser (mismo CSS que el kit) ---------- */
+.grupo { --g-fondo: transparent; --g-texto: #E8DFC9; --g-acento: #E0C78C; --g-borde: rgba(201, 168, 92, .4); display: grid; gap: 1.25rem; margin-top: 2.25rem; padding: 1.5rem 0 0; border-top: 1px solid var(--g-borde); background: var(--g-fondo); color: var(--g-texto); }
+.grupo--claro { --g-texto: #241A14; --g-acento: #8E1219; --g-borde: #E2D6BF; }
+.grupo__logo { width: 140px; height: auto; }
+.grupo__texto { margin: 0 0 1rem; font-size: 1rem; }
+.grupo__locales { list-style: none; display: grid; gap: .5rem; padding: 0; margin: 0; }
+.grupo__enlace { display: grid; grid-template-columns: 28px 1fr auto; column-gap: .75rem; align-items: center; min-height: 44px; padding: .45rem .6rem; border: 1px solid var(--g-borde); border-radius: 6px; color: inherit; text-decoration: none; }
+a.grupo__enlace:hover { border-color: var(--g-acento); }
+.grupo__icono { grid-row: span 2; width: 26px; height: 28px; color: var(--g-acento); }
+.grupo__nombre { font-weight: 700; line-height: 1.25; }
+.grupo__dir { grid-column: 2; font-size: .9rem; opacity: .9; }
+.grupo__aqui, .grupo__externo { grid-column: 3; grid-row: 1 / span 2; align-self: center; }
+.grupo__aqui { padding: .05rem .6rem; border: 1px solid var(--g-acento); border-radius: 999px; font-size: .78rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--g-acento); }
+.grupo__externo { width: 18px; height: 18px; color: var(--g-acento); }
+.grupo__local--aqui .grupo__enlace { border-color: var(--g-acento); }
+@media (min-width: 52rem) {
+  .grupo { grid-template-columns: 140px 1fr; column-gap: 2rem; align-items: start; }
+  .grupo__locales { grid-template-columns: 1fr 1fr; }
+}
+
+/* Variantes autocontenidas: el bloque lleva su propio fondo. */
+.grupo--oscuro, .grupo--claro { margin-top: 0; padding: 1.5rem; border: 1px solid var(--g-borde); border-radius: 8px; font: 400 16px/1.5 "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif; }
+.grupo--oscuro { --g-fondo: #24130A; }
+.grupo--claro { --g-fondo: #F6F0E3; }
+.solo-lectores { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

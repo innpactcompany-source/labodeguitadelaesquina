@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" width="24" height="24" role="img" aria-label="Tele con fútbol">
+  <path d="M1.6 2.2 H8.4 A0.6 0.6 0 0 1 9 2.8 V6.9 A0.6 0.6 0 0 1 8.4 7.5 H1.6 A0.6 0.6 0 0 1 1 6.9 V2.8 A0.6 0.6 0 0 1 1.6 2.2 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M3.5 9.1 H6.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="5" cy="4.85" r="1.15" fill="currentColor"/>
+</svg>

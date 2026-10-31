@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="16.25 12.95 24.5 9.95" width="980" height="398" role="img" aria-labelledby="t">
+<title id="t">Grupo Hostelero Friser</title>
+<defs>
+<linearGradient id="goldTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1BF"/><stop offset="0.28" stop-color="#F3CB63"/><stop offset="0.62" stop-color="#CF9F30"/><stop offset="1" stop-color="#8F6716"/></linearGradient>
+<linearGradient id="goldBot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8F6716"/><stop offset="0.4" stop-color="#C9962B"/><stop offset="0.78" stop-color="#F0B445"/><stop offset="1" stop-color="#FFD98A"/></linearGradient>
+<linearGradient id="goldV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBE08A"/><stop offset="0.5" stop-color="#D4AF37"/><stop offset="1" stop-color="#9E7619"/></linearGradient>
+<linearGradient id="bevelL" gradientUnits="userSpaceOnUse" x1="0" y1="-18" x2="0" y2="100"><stop offset="0" stop-color="#6A4E12"/><stop offset="0.45" stop-color="#B9872A"/><stop offset="0.8" stop-color="#F0A83A"/><stop offset="1" stop-color="#FFC45E"/></linearGradient>
+<linearGradient id="dashL" gradientUnits="userSpaceOnUse" x1="17" y1="0" x2="20.5" y2="0"><stop offset="0" stop-color="#9E7619" stop-opacity="0.15"/><stop offset="1" stop-color="#F3CB63"/></linearGradient>
+<linearGradient id="dashR" gradientUnits="userSpaceOnUse" x1="36.5" y1="0" x2="40" y2="0"><stop offset="0" stop-color="#F3CB63"/><stop offset="1" stop-color="#9E7619" stop-opacity="0.15"/></linearGradient>
+<linearGradient id="metalL" gradientUnits="userSpaceOnUse" x1="0" y1="-18" x2="0" y2="100"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.5" stop-color="#D9DBDF"/><stop offset="0.59" stop-color="#878B92"/><stop offset="0.65" stop-color="#BFC3C9"/><stop offset="0.86" stop-color="#ECEEF1"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient>
+<linearGradient id="metalS" gradientUnits="userSpaceOnUse" x1="0" y1="-30" x2="0" y2="30"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.45" stop-color="#D3D6DB"/><stop offset="0.52" stop-color="#8A8E95"/><stop offset="0.6" stop-color="#D9DCE0"/><stop offset="1" stop-color="#F8F9FA"/></linearGradient>
+<linearGradient id="metalT" gradientUnits="userSpaceOnUse" x1="0" y1="23.6" x2="0" y2="25.4"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.5" stop-color="#D5D8DC"/><stop offset="0.58" stop-color="#8E9299"/><stop offset="0.68" stop-color="#D0D3D8"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient>
+</defs>
+<g transform="translate(17 15.087) scale(0.07143)">
+<g fill="none" stroke="url(#bevelL)" stroke-width="12.6" stroke-linejoin="miter"><path d="M10 0 H82 L92 10 V34 H68 V24 H24 V76 H68 V68 H52 V46 H92 V90 L82 100 H10 L0 90 V10 Z"/><path d="M112 -18 H120 L128 -10 V60 H208 V-10 L216 -18 H224 L232 -10 V92 L224 100 H208 V82 H128 V100 H112 L104 92 V-10 Z"/><path d="M254 0 H312 L322 10 V24 H268 V42 H308 V64 H268 V100 H254 L244 90 V10 Z"/></g>
+<g fill="url(#metalL)" stroke="#2B1F08" stroke-width="1.6" stroke-linejoin="miter"><path d="M10 0 H82 L92 10 V34 H68 V24 H24 V76 H68 V68 H52 V46 H92 V90 L82 100 H10 L0 90 V10 Z"/><path d="M112 -18 H120 L128 -10 V60 H208 V-10 L216 -18 H224 L232 -10 V92 L224 100 H208 V82 H128 V100 H112 L104 92 V-10 Z"/><path d="M254 0 H312 L322 10 V24 H268 V42 H308 V64 H268 V100 H254 L244 90 V10 Z"/></g>
+<g transform="translate(168 21)">
+<path d="M0.00 0.00 L0.00 -28.00 M0.00 -18.00 L-8.00 -26.00 M0.00 -18.00 L8.00 -26.00 M0.00 0.00 L24.25 -14.00 M15.59 -9.00 L18.52 -19.93 M15.59 -9.00 L26.52 -6.07 M-0.00 0.00 L24.25 14.00 M15.59 9.00 L26.52 6.07 M15.59 9.00 L18.52 19.93 M-0.00 0.00 L0.00 28.00 M0.00 18.00 L8.00 26.00 M0.00 18.00 L-8.00 26.00 M0.00 -0.00 L-24.25 14.00 M-15.59 9.00 L-18.52 19.93 M-15.59 9.00 L-26.52 6.07 M0.00 0.00 L-24.25 -14.00 M-15.59 -9.00 L-26.52 -6.07 M-15.59 -9.00 L-18.52 -19.93" fill="none" stroke="#2B1F08" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0.00 0.00 L0.00 -28.00 M0.00 -18.00 L-8.00 -26.00 M0.00 -18.00 L8.00 -26.00 M0.00 0.00 L24.25 -14.00 M15.59 -9.00 L18.52 -19.93 M15.59 -9.00 L26.52 -6.07 M-0.00 0.00 L24.25 14.00 M15.59 9.00 L26.52 6.07 M15.59 9.00 L18.52 19.93 M-0.00 0.00 L0.00 28.00 M0.00 18.00 L8.00 26.00 M0.00 18.00 L-8.00 26.00 M0.00 -0.00 L-24.25 14.00 M-15.59 9.00 L-18.52 19.93 M-15.59 9.00 L-26.52 6.07 M0.00 0.00 L-24.25 -14.00 M-15.59 -9.00 L-26.52 -6.07 M-15.59 -9.00 L-18.52 -19.93" fill="none" stroke="url(#metalS)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="0" cy="0" r="5.5" fill="#2B1F08"/>
+<circle cx="0" cy="0" r="4.6" fill="url(#goldV)"/>
+</g></g>
+</svg>

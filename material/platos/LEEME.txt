@@ -1,0 +1,28 @@
+Fotos de los platos
+===================
+
+Deja aquí las fotos de los platos a medida que lleguen. Cada foto lleva como nombre el de su plato:
+
+tostada-aceite-sal.jpg
+tostada-tomate-jamon.jpg
+tostada-tomate-aguacate.jpg
+tostada-mantequilla-mermelada.jpg
+tostada-tomate-atun.jpg
+tostada-tomate-jamon-queso.jpg
+bocadillo-entrecot.jpg
+bocadillo-sobrasada-jamon-cebolla.jpg
+chivito-bodeguita.jpg
+bocadillo-tortilla-patata.jpg
+bocadillo-bacon-queso.jpg
+croissant.jpg
+cafe-solo.jpg
+cafe-con-leche.jpg
+cortado.jpg
+cappuccino.jpg
+te-infusiones.jpg
+tarta.jpg
+
+Sirven .jpg, .jpeg, .png, .heic o .webp, de cualquier tamaño.
+
+Después, en Claude Code:
+«Hay fotos nuevas de platos en material/platos/. Añádelas siguiendo CLAUDE.md y haz la verificación completa.»

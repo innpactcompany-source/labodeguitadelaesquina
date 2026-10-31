@@ -1,0 +1,62 @@
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+AddType font/woff2 .woff2
+AddType application/manifest+json .webmanifest
+
+RewriteEngine On
+
+# Recursos con ?v=: caché de un año e immutable (la cabecera está más abajo)
+RewriteCond %{QUERY_STRING} (^|&)v=[0-9A-Za-z.]+(&|$)
+RewriteRule \.(css|js|webp|jpe?g|png|svg|woff2)$ - [E=CACHE_INMUTABLE:1]
+
+# Pegatinas NFC: 302 a propósito, para cambiar el destino sin reprogramar las piezas
+RewriteRule ^mesa/?$ https://labodeguitadelaesquina.com/carta/ [R=302,L]
+RewriteRule ^barra/?$ https://search.google.com/local/writereview?placeid=ChIJ10m2YSxHYA0R3iMZo7EyFII [R=302,L,NE]
+
+# Locales de Grupo Hostelero Friser. Cuando un local estrene web, cambia su destino por su dominio
+# (por ejemplo, https://pubcolonial.com/) aquí y en las demás webs del grupo.
+RewriteRule ^ir/pub-colonial/?$ https://www.google.com/maps/search/?api=1&query=Pub+Colonial&query_place_id=ChIJE1xR8adIYA0RsxBHAsRYgcg [R=302,L,NE]
+RewriteRule ^ir/taberna-asturiana/?$ https://www.google.com/maps/search/?api=1&query=Restaurante+Taberna+Asturiana&query_place_id=ChIJ7Scb9KdIYA0RFT_0ckmAVrk [R=302,L,NE]
+RewriteRule ^ir/excalibur/?$ https://www.google.com/maps/search/?api=1&query=Excalibur&query_place_id=ChIJlYhj86dIYA0RDoDQvQBS3FU [R=302,L,NE]
+
+# HTTPS y dominio sin www
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://labodeguitadelaesquina.com%{REQUEST_URI} [R=301,L]
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/xml application/javascript application/json application/ld+json image/svg+xml application/manifest+json
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 10 minutes"
+  ExpiresByType application/xml "access plus 10 minutes"
+  ExpiresByType text/xml "access plus 10 minutes"
+  ExpiresByType text/plain "access plus 10 minutes"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType image/webp "access plus 6 months"
+  ExpiresByType image/jpeg "access plus 6 months"
+  ExpiresByType image/png "access plus 6 months"
+  ExpiresByType image/svg+xml "access plus 6 months"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/vnd.microsoft.icon "access plus 6 months"
+  ExpiresByType application/manifest+json "access plus 1 week"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # HTML, sitemap.xml y robots.txt: caché corta con revalidación
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "public, max-age=600, must-revalidate"
+  </FilesMatch>
+  # Recursos con ?v= (css, js, imágenes, svg y fuentes): un año e immutable
+  Header set Cache-Control "public, max-age=31536000, immutable" env=CACHE_INMUTABLE
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; font-src 'self'; frame-src https://www.google.com https://maps.google.com; connect-src 'self'; base-uri 'self'; form-action 'self'"
+</IfModule>
