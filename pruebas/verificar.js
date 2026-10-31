@@ -7,7 +7,8 @@ const todos = walk(WEB);
 const textos = todos.filter(f => /\.(html|css|js|json|xml|txt|webmanifest|svg)$/.test(f) || f.endsWith('.htaccess'));
 const rel = f => path.relative(WEB, f).replace(/\\/g, '/');
 const leer = f => fs.readFileSync(f, 'utf8');
-const htmls = todos.filter(f => f.endsWith('.html'));
+// El archivo de verificación de Google Search Console (googleXXXX.html) no es una página de la web
+const htmls = todos.filter(f => f.endsWith('.html') && !/[\\/]google[0-9a-f]+\.html$/.test(f));
 let errores = 0;
 const ok = (n, c, d = '') => { console.log(`${c ? 'OK   ' : 'FALLA'} ${n}${d ? ' · ' + d : ''}`); if (!c) errores++; };
 
