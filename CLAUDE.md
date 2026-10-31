@@ -141,6 +141,9 @@ Los scripts de `pruebas/` hacen casi todo: `node pruebas/verificar.js` (puntos 1
   sigue siendo la referencia si algún día se vuelve a Hostinger.
 - URL temporal: https://innpactcompany-source.github.io/labodeguitadelaesquina/ (rutas reescritas con el prefijo del
   repositorio, `noindex` y `robots.txt` que lo bloquea todo).
+- Estado (2026-10-31): dominio ya conectado, `DOMINIO` definido, certificado aprobado y «Enforce HTTPS» activo. La web
+  sirve desde https://labodeguitadelaesquina.com/. La URL temporal de arriba queda redirigida por GitHub al dominio.
+  Para volver a conectar un dominio nuevo, estos son los pasos:
 - Dominio propio: con el DNS ya apuntando a GitHub, definir la variable de Actions `DOMINIO=labodeguitadelaesquina.com`,
   poner el dominio en Settings > Pages (o con `gh api -X PUT repos/innpactcompany-source/labodeguitadelaesquina/pages -f cname=labodeguitadelaesquina.com`),
   relanzar el flujo y activar «Enforce HTTPS». Con la variable definida las rutas quedan en la raíz y el `robots.txt`
