@@ -128,3 +128,20 @@ Los scripts de `pruebas/` hacen casi todo: `node pruebas/verificar.js` (puntos 1
 12. /carta/ pesa menos de 200 KB en la primera carga y no tiene desplazamiento lateral a 360 px.
 13. El kit `kit-grupo-hostelero-friser/` está completo: `bloque-grupo.html` y `.css`, `iconos/`, `logos/`,
     `locales.json`, `htaccess-grupo.txt` y `LEEME.md`.
+
+## Publicación en GitHub Pages
+
+- Repositorio: https://github.com/innpactcompany-source/labodeguitadelaesquina (público, rama `main`). Git de este
+  proyecto usa solo en local el correo `innpactcompany@gmail.com`.
+- Cada subida a `main` que toque `web/` o el flujo lanza `.github/workflows/pages.yml`, que prepara una copia de
+  `web/` con `.github/scripts/preparar-pages.js` y la publica. No hay compilación. Para publicar un cambio:
+  `git add -A && git commit -m "…" && git push` (con `gh` ya autorizado en este equipo).
+- GitHub Pages no lee `.htaccess`: la copia publicada convierte `/mesa`, `/barra` e `/ir/<local>` en páginas HTML
+  de redirección (meta refresh) y no aplica la CSP ni las cabeceras de caché. `web/` no cambia: el `.htaccess`
+  sigue siendo la referencia si algún día se vuelve a Hostinger.
+- URL temporal: https://innpactcompany-source.github.io/labodeguitadelaesquina/ (rutas reescritas con el prefijo del
+  repositorio, `noindex` y `robots.txt` que lo bloquea todo).
+- Dominio propio: con el DNS ya apuntando a GitHub, definir la variable de Actions `DOMINIO=labodeguitadelaesquina.com`,
+  poner el dominio en Settings > Pages (o con `gh api -X PUT repos/innpactcompany-source/labodeguitadelaesquina/pages -f cname=labodeguitadelaesquina.com`),
+  relanzar el flujo y activar «Enforce HTTPS». Con la variable definida las rutas quedan en la raíz y el `robots.txt`
+  vuelve a permitir todo.
