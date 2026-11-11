@@ -29,6 +29,8 @@ const RUTAS = {
   '/cookies/': '/en/cookies/'
 };
 const LEGALES = ['/aviso-legal/', '/privacidad/', '/cookies/'];
+// Locales del grupo con web en inglés: si el .htaccess tiene /ir/en/<slug>, las páginas en inglés enlazan ahí
+const IR_EN = new Set([...fs.readFileSync(path.join(WEB, '.htaccess'), 'utf8').matchAll(/^RewriteRule \^ir\/en\/([a-z0-9-]+)\/\?\$/gm)].map(m => m[1]));
 // Anclas de las secciones de la carta
 const ANCLAS = { 'tostadas': 'toast', 'bocadillos': 'sandwiches', 'dulces-y-cafes': 'pastries-and-coffee' };
 const WHATSAPP_ES = 'text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20La%20Bodeguita';
@@ -52,6 +54,8 @@ function rutaEn(u) {
   const conDominio = u.startsWith(DOMINIO + '/');
   const r = conDominio ? u.slice(DOMINIO.length) : u;
   if (r.startsWith('#')) return '#' + (ANCLAS[r.slice(1)] || r.slice(1));
+  const ir = r.match(/^\/ir\/([a-z0-9-]+)$/);
+  if (ir) return IR_EN.has(ir[1]) ? '/ir/en/' + ir[1] : u;
   if (!r.startsWith('/')) return u;
   const [p, ancla] = r.split('#');
   if (!(p in RUTAS)) return u;

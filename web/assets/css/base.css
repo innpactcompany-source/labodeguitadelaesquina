@@ -43,8 +43,6 @@
   --alto-cabecera: 64px;
   --alto-barra: 62px;
 
-  --foco-portada: 50% 60%;
-  --foco-portada-movil: 42% 55%;
   --foco-barra: 50% 40%;
   --foco-barra-movil: 50% 50%;
   --foco-rotulo: 50% 50%;
@@ -272,7 +270,7 @@ main { display: block; }
 /* ---------- Portada ---------- */
 .portada { --foto-movil: min(42svh, 340px); position: relative; overflow: hidden; background-color: #3A2416; background-image: radial-gradient(ellipse at 60% 35%, #7A4521 0%, #3A2416 55%, #24130A 100%); }
 .portada__foto, .portada__foto img { position: absolute; inset: 0 0 auto 0; width: 100%; height: var(--foto-movil); }
-.portada__foto img { object-fit: cover; object-position: var(--foco-portada-movil); transition: opacity .3s ease-out; }
+.portada__foto img { object-fit: cover; object-position: var(--foco-barra-movil); transition: opacity .3s ease-out; }
 .portada__foto img.fundido-pendiente { opacity: 0; }
 .portada__foto::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, rgba(36, 19, 10, .78) 0%, rgba(36, 19, 10, .5) 35%, rgba(36, 19, 10, 0) 72%); }
 .portada__in { position: relative; width: 100%; padding: max(0px, calc(var(--foto-movil) - 8.5rem)) 0 1rem; }
@@ -294,7 +292,7 @@ main { display: block; }
 @media (min-width: 701px) {
   .portada { display: flex; align-items: flex-end; min-height: clamp(26rem, calc(100svh - var(--alto-cabecera)), 46rem); }
   .portada__foto, .portada__foto img { inset: 0; height: 100%; }
-  .portada__foto img { object-position: var(--foco-portada); }
+  .portada__foto img { object-position: var(--foco-barra); }
   .portada__in { width: min(100% - 2rem, var(--ancho)); margin-inline: auto; padding: 0 0 2.5rem; }
   .portada .cartela { --cap: 2.4rem; width: min(100% - 2 * var(--cap), 46rem); margin-left: var(--cap); padding: 1.75rem 2rem; }
   .portada__estado { justify-content: flex-start; margin: 0 0 .75rem var(--cap-estado, 2.4rem); }
@@ -478,6 +476,13 @@ body { padding-bottom: calc(var(--alto-barra) + env(safe-area-inset-bottom)); }
   .barra-movil { display: none; }
   body { padding-bottom: 0; }
 }
+
+/* ---------- Páginas de redirección (/mesa, /barra, /ir/…), que genera .github/scripts/preparar-pages.js ---------- */
+.redireccion { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .4rem; min-height: 100svh; padding: 1.5rem 1rem; text-align: center; }
+.redireccion picture { margin-bottom: 1.25rem; }
+.redireccion img { width: min(296px, 80vw); height: auto; }
+.redireccion__texto { margin: .75rem 0 0; color: var(--color-texto-suave); }
+.redireccion p { margin: 0; }
 
 /* ---------- Cookies ---------- */
 /* No hay aviso al entrar: el permiso del mapa se pide en su recuadro y se cambia en este panel */

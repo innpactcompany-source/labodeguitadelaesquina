@@ -1,6 +1,7 @@
 {
   "grupo": "Grupo Hostelero Friser",
   "ruta_ir": "/ir/<slug>",
+  "ruta_ir_en": "/ir/en/<slug> (solo si el local tiene web en inglés; lo usan las páginas en inglés)",
   "locales": [
     {
       "slug": "la-bodeguita",
@@ -11,7 +12,8 @@
       "dominio": "labodeguitadelaesquina.com",
       "web_activa": true,
       "place_id": "ChIJ10m2YSxHYA0R3iMZo7EyFII",
-      "destino_ir": "https://labodeguitadelaesquina.com/"
+      "destino_ir": "https://labodeguitadelaesquina.com/",
+      "destino_ir_en": "https://labodeguitadelaesquina.com/en/"
     },
     {
       "slug": "pub-colonial",
@@ -20,9 +22,10 @@
       "icono": "jarra",
       "icono_archivo": "icono-pub-colonial.svg",
       "dominio": "pubcolonial.com",
-      "web_activa": false,
+      "web_activa": true,
       "place_id": "ChIJE1xR8adIYA0RsxBHAsRYgcg",
-      "destino_ir": "https://www.google.com/maps/search/?api=1&query=Pub+Colonial&query_place_id=ChIJE1xR8adIYA0RsxBHAsRYgcg"
+      "destino_ir": "https://pubcolonial.com/",
+      "destino_ir_en": "https://pubcolonial.com/en/"
     },
     {
       "slug": "taberna-asturiana",
@@ -33,7 +36,8 @@
       "dominio": "tabernaasturiana.com",
       "web_activa": false,
       "place_id": "ChIJ7Scb9KdIYA0RFT_0ckmAVrk",
-      "destino_ir": "https://www.google.com/maps/search/?api=1&query=Restaurante+Taberna+Asturiana&query_place_id=ChIJ7Scb9KdIYA0RFT_0ckmAVrk"
+      "destino_ir": "https://www.google.com/maps/search/?api=1&query=Restaurante+Taberna+Asturiana&query_place_id=ChIJ7Scb9KdIYA0RFT_0ckmAVrk",
+      "destino_ir_en": null
     },
     {
       "slug": "excalibur",
@@ -42,9 +46,10 @@
       "icono": "trébol",
       "icono_archivo": "icono-excalibur.svg",
       "dominio": "excaliburirishpub.com",
-      "web_activa": false,
+      "web_activa": true,
       "place_id": "ChIJlYhj86dIYA0RDoDQvQBS3FU",
-      "destino_ir": "https://www.google.com/maps/search/?api=1&query=Excalibur&query_place_id=ChIJlYhj86dIYA0RDoDQvQBS3FU"
+      "destino_ir": "https://excaliburirishpub.com/",
+      "destino_ir_en": "https://excaliburirishpub.com/en/"
     }
   ]
 }

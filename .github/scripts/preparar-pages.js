@@ -45,23 +45,39 @@ const ht = fs.readFileSync(path.join(WEB, '.htaccess'), 'utf8');
 const reglas = [...ht.matchAll(/^RewriteRule \^([a-z0-9\/-]+?)\/\?\$ (\S+) \[R=30[12][^\]]*\]/gm)].map(m => [m[1], m[2]]);
 if (!reglas.length) throw new Error('No se han encontrado redirecciones en web/.htaccess');
 const escapa = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+// La página de redirección usa la misma CSP, la misma versión de CSS y el mismo logo que el resto de la web
+const inicio = fs.readFileSync(path.join(WEB, 'index.html'), 'utf8');
+const csp = (inicio.match(/<meta http-equiv="Content-Security-Policy" content="[^"]+">\n<meta name="referrer" content="[^"]+">\n/) || [''])[0];
+const version = (inicio.match(/\/assets\/css\/base\.css(\?v=[^"]+)"/) || ['', ''])[1];
+if (!csp || !version) throw new Error('No encuentro la CSP o la versión del CSS en web/index.html');
 for (const [origen, destinoOriginal] of reglas) {
   let destino = destinoOriginal;
   if (!DOMINIO && destino.startsWith(DOMINIO_FINAL + '/')) destino = BASE + destino.slice(DOMINIO_FINAL.length);
+  const d = escapa(destino);
+  // /ir/en/<local> es para las páginas en inglés: el inglés va primero
+  const ingles = origen.startsWith('ir/en/');
+  const boton = primero => `btn ${primero ? 'btn--primario' : 'btn--secundario'}`;
+  const es = `<p class="redireccion__texto" lang="es">Un momento…</p>\n<p><a class="${boton(!ingles)}" href="${d}" lang="es">Si no se abre, pulsa aquí</a></p>`;
+  const en = `<p class="redireccion__texto" lang="en">One moment…</p>\n<p><a class="${boton(ingles)}" href="${d}" lang="en">If it doesn’t open, tap here</a></p>`;
   const dir = path.join(SALIDA, origen);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), `<!doctype html>
-<html lang="es-ES">
+<html lang="${ingles ? 'en' : 'es-ES'}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Redirigiendo…</title>
+${csp}<title>${ingles ? 'Redirecting' : 'Redirigiendo'}… · La Bodeguita de la Esquina</title>
 <meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="0; url=${escapa(destino)}">
-<link rel="canonical" href="${escapa(destino)}">
+<meta http-equiv="refresh" content="0; url=${d}">
+<link rel="canonical" href="${d}">
+<link rel="icon" href="/assets/marca/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/base.css${version}">
 </head>
 <body>
-<p><a href="${escapa(destino)}">Continuar</a></p>
+<main class="redireccion">
+<picture><source media="(prefers-color-scheme: dark)" srcset="/assets/marca/bodeguita-logo-horizontal-fondo-oscuro.svg"><img src="/assets/marca/bodeguita-logo-horizontal-fondo-claro.svg" width="296" height="44" alt="La Bodeguita de la Esquina"></picture>
+${ingles ? en + '\n' + es : es + '\n' + en}
+</main>
 </body>
 </html>
 `);

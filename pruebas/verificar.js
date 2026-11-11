@@ -132,7 +132,20 @@ ok('12b. /carta/ solo precarga Cinzel y Source Sans 3', fuentesCarta === 2 && !/
 // 13
 const kitNec = ['bloque-grupo.html', 'bloque-grupo.css', 'locales.json', 'htaccess-grupo.txt', 'LEEME.md', 'iconos/icono-la-bodeguita.svg', 'iconos/icono-pub-colonial.svg', 'iconos/icono-taberna-asturiana.svg', 'iconos/icono-excalibur.svg', 'logos/ghf-logo-color-fondo-oscuro.svg', 'logos/ghf-logo-color-fondo-claro.svg', 'logos/ghf-logo-oro.svg', 'logos/ghf-logo-blanco.svg', 'logos/ghf-logo-negro.svg', 'logos/ghf-monograma-color-fondo-oscuro.svg', 'logos/ghf-monograma-color-fondo-claro.svg'];
 const loc = JSON.parse(leer(path.join(KIT, 'locales.json'))).locales;
-ok('13. Kit del grupo completo', kitNec.every(f => fs.existsSync(path.join(KIT, f))) && loc.length === 4 && loc.every(l => l.slug && l.nombre && l.direccion && l.icono && l.dominio && l.place_id && l.destino_ir) && (leer(path.join(KIT, 'htaccess-grupo.txt')).match(/^RewriteRule/gm) || []).length === 4);
+ok('13. Kit del grupo completo', kitNec.every(f => fs.existsSync(path.join(KIT, f))) && loc.length === 4 && loc.every(l => l.slug && l.nombre && l.direccion && l.icono && l.dominio && l.place_id && l.destino_ir) && (() => {
+  // Una regla /ir/<slug> por local y una /ir/en/<slug> por cada local con web en inglés, con los destinos de locales.json
+  const reglasKit = leer(path.join(KIT, 'htaccess-grupo.txt')).replace(/\r/g, '').match(/^RewriteRule .*$/gm) || [];
+  const conEn = loc.filter(l => l.destino_ir_en);
+  return reglasKit.length === loc.length + conEn.length
+    && loc.every(l => reglasKit.some(r => r.startsWith(`RewriteRule ^ir/${l.slug}/?$ ${l.destino_ir} `)))
+    && conEn.every(l => reglasKit.some(r => r.startsWith(`RewriteRule ^ir/en/${l.slug}/?$ ${l.destino_ir_en} `)));
+})());
+// Las reglas /ir/ de esta web son las del kit (salvo la de La Bodeguita, que no se usa aquí) y las páginas inglesas enlazan a /ir/en/ cuando existe
+const reglasIr = ht.replace(/\r/g, '').match(/^RewriteRule \^ir\/.*$/gm) || [];
+const reglasKitIr = (leer(path.join(KIT, 'htaccess-grupo.txt')).replace(/\r/g, '').match(/^RewriteRule \^ir\/.*$/gm) || []).filter(r => !/la-bodeguita/.test(r));
+ok('13b. Reglas /ir/ iguales que las del kit; en inglés, los locales con web inglesa enlazan a /ir/en/<slug> y el resto a /ir/<slug>', reglasIr.join('\n') === reglasKitIr.join('\n')
+  && loc.filter(l => l.slug !== 'la-bodeguita').every(l => { const en = leer(path.join(WEB, 'en/index.html')), es = leer(path.join(WEB, 'index.html'));
+    return es.includes(`href="/ir/${l.slug}"`) && en.includes(`href="/ir/${l.destino_ir_en ? 'en/' : ''}${l.slug}"`); }));
 // robots y .htaccess
 ok('14. robots.txt exacto y sin bloqueo de indexación', leer(path.join(WEB, 'robots.txt')) === 'User-agent: *\nAllow: /\n\nSitemap: https://labodeguitadelaesquina.com/sitemap.xml\n' && !/x-robots-tag|noindex/i.test(ht) && !textos.some(f => rel(f) !== '404.html' && /<meta name="robots" content="[^"]*noindex/i.test(leer(f))));
 ok('15. .htaccess: caché inmutable con ?v=, caché corta del HTML y compresión', /max-age=31536000, immutable" env=CACHE_INMUTABLE/.test(ht) && /max-age=600, must-revalidate/.test(ht) && ['text/html', 'text/css', 'application/javascript', 'image/svg+xml', 'application/xml', 'text/xml'].every(t => ht.split('\n').some(l => l.includes('DEFLATE') && l.split(/\s+/).includes(t))) && /Content-Security-Policy/.test(ht));
@@ -292,5 +305,22 @@ ok('S2. Imagen para redes en inglés (og-image-en.jpg, 1200 x 630, menos de 250 
   && Object.entries(PARES).every(([es, en]) => { const tEn = leer(pag(en)), tEs = leer(pag(es));
     return !tEn.includes(ogEs) && tEn.includes(`<meta property="og:image" content="https://labodeguitadelaesquina.com${ogEn}">`) && tEn.includes(`<meta name="twitter:image" content="https://labodeguitadelaesquina.com${ogEn}">`) && /<meta property="og:image:alt" content="[^"]*">/.test(tEn)
       && !tEs.includes(ogEn); }));
+// ---------- Páginas de redirección que se publican en GitHub Pages ----------
+const salidaPages = fs.mkdtempSync(path.join(require('os').tmpdir(), 'pages-'));
+let redirOk = false, redirDet = '';
+try {
+  require('child_process').execFileSync(process.execPath, [path.join(__dirname, '..', '.github', 'scripts', 'preparar-pages.js'), salidaPages], { env: { ...process.env, DOMINIO: 'labodeguitadelaesquina.com' }, stdio: 'pipe' });
+  const reglasHt = [...ht.replace(/\r/g, '').matchAll(/^RewriteRule \^([a-z0-9\/-]+?)\/\?\$ (\S+) \[R=30[12]/gm)].map(m => [m[1], m[2].replace(/&/g, '&amp;')]);
+  const malas = reglasHt.filter(([o, d]) => {
+    const f = path.join(salidaPages, o, 'index.html'); if (!fs.existsSync(f)) return true;
+    const t = leer(f), ingles = o.startsWith('ir/en/');
+    return !t.includes(`<meta http-equiv="refresh" content="0; url=${d}">`) || !t.includes('<meta name="robots" content="noindex">') || !t.includes(CSP_META)
+      || !t.includes(`href="${d}" lang="es">Si no se abre, pulsa aquí</a>`) || !t.includes(`href="${d}" lang="en">If it doesn’t open, tap here</a>`)
+      || !/<link rel="stylesheet" href="\/assets\/css\/base\.css\?v=/.test(t) || !t.includes(`<html lang="${ingles ? 'en' : 'es-ES'}">`);
+  }).map(r => r[0]);
+  redirOk = reglasHt.length === 7 && !malas.length; redirDet = reglasHt.length + ' páginas' + (malas.length ? ' · mal: ' + malas.join(', ') : '');
+} catch (e) { redirDet = String(e.message).slice(0, 200); }
+fs.rmSync(salidaPages, { recursive: true, force: true });
+ok('R1. Cada redirección de /mesa, /barra e /ir/… sale como página con meta refresh, noindex, la CSP, los estilos y el enlace visible en español e inglés', redirOk, redirDet);
 console.log(errores ? `\n${errores} comprobaciones con fallos` : '\nTodas las comprobaciones automáticas correctas');
 process.exit(errores ? 1 : 0);

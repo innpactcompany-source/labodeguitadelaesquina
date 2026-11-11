@@ -15,11 +15,13 @@ RewriteRule \.(css|js|webp|jpe?g|png|svg|woff2)$ - [E=CACHE_INMUTABLE:1]
 RewriteRule ^mesa/?$ https://labodeguitadelaesquina.com/carta/ [R=302,L]
 RewriteRule ^barra/?$ https://search.google.com/local/writereview?placeid=ChIJ10m2YSxHYA0R3iMZo7EyFII [R=302,L,NE]
 
-# Locales de Grupo Hostelero Friser. Cuando un local estrene web, cambia su destino por su dominio
-# (por ejemplo, https://pubcolonial.com/) aquí y en las demás webs del grupo.
-RewriteRule ^ir/pub-colonial/?$ https://www.google.com/maps/search/?api=1&query=Pub+Colonial&query_place_id=ChIJE1xR8adIYA0RsxBHAsRYgcg [R=302,L,NE]
+# Locales de Grupo Hostelero Friser. Cuando un local estrene web, cambia su destino por su dominio aquí y en las
+# demás webs del grupo. Si su web tiene versión inglesa, añade /ir/en/<slug>: las páginas en inglés enlazan ahí.
+RewriteRule ^ir/pub-colonial/?$ https://pubcolonial.com/ [R=302,L]
+RewriteRule ^ir/en/pub-colonial/?$ https://pubcolonial.com/en/ [R=302,L]
 RewriteRule ^ir/taberna-asturiana/?$ https://www.google.com/maps/search/?api=1&query=Restaurante+Taberna+Asturiana&query_place_id=ChIJ7Scb9KdIYA0RFT_0ckmAVrk [R=302,L,NE]
-RewriteRule ^ir/excalibur/?$ https://www.google.com/maps/search/?api=1&query=Excalibur&query_place_id=ChIJlYhj86dIYA0RDoDQvQBS3FU [R=302,L,NE]
+RewriteRule ^ir/excalibur/?$ https://excaliburirishpub.com/ [R=302,L]
+RewriteRule ^ir/en/excalibur/?$ https://excaliburirishpub.com/en/ [R=302,L]
 
 # HTTPS y dominio sin www
 RewriteCond %{HTTPS} off [OR]

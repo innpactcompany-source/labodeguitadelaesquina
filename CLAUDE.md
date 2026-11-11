@@ -42,12 +42,13 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
   con el mismo nombre y la misma proporción. El encuadre de cada una está en las variables `--foco-*` de
   `base.css`.
 - Inicio precarga también Libre Baskerville (la usa el óvalo de la portada): sin ello el óvalo cambiaba de alto al cargar la fuente y la home perdía CLS 0. La portada lleva `background-color` marrón y degradado detrás de la foto.
-- Foto de portada (desde el 11-11-2026): la de la terraza (`bodeguita-terraza-*`), con el encuadre en `--foco-portada` y
-  `--foco-portada-movil`. La de la barra salió de la portada porque tenía la decoración de Halloween; sigue en
-  `assets/img/` (`bodeguita-barra-*`, también la versión `-movil`). **Cuando lleguen las fotos de Navidad, la de la barra
-  vuelve a la portada**: precarga (`<link rel="preload" as="image">`, con su versión móvil), `srcset` del
-  `<picture class="portada__foto">`, primer elemento de `image` en el JSON-LD de todas las páginas y los dos `--foco-portada`
-  (la barra usaba `50% 40%` en escritorio y `50% 50%` en móvil). Luego, `node herramientas/generar-ingles.js`.
+- Foto de portada: la de la barra (`bodeguita-barra-*` en escritorio y `bodeguita-barra-movil-*` por debajo de 700 px),
+  con el encuadre de `--foco-barra` (`50% 40%`) y `--foco-barra-movil` (`50% 50%`). **Es la portada definitiva hasta que
+  lleguen las fotos de Navidad: no se cambia por otra mientras tanto** (del 11 al 12-11-2026 se probó la de la terraza y
+  se deshizo). Aparece en cuatro sitios que van juntos: las dos precargas (`<link rel="preload" as="image">`, móvil y
+  escritorio), el `<picture class="portada__foto">`, el primer elemento de `image` en el JSON-LD de las 15 páginas y las
+  dos variables de encuadre. Al cambiarla, luego `node herramientas/generar-ingles.js`. La foto de la terraza va en la
+  tarjeta «Terraza» de Inicio y en el schema, en segundo lugar.
 - Texto: nada visible baja de 13 px (salvo lo marcado solo para lectores). /carta/ mide como máximo 960 px de ancho y sus pestañas (Tostadas, Bocadillos, Dulces y cafés) quedan fijas bajo la cabecera, con `--alto-chips` para el desplazamiento de anclas.
 - Acceso a las cookies: en móvil, «Configurar cookies» (`<li class="nav__cookies">`, después de Inicio, Carta, Cómo llegar y Preguntas frecuentes y antes de los botones Llamar y WhatsApp) y el del pie; desde 832 px, solo el del pie (y el botón de la política de cookies). No hay botón flotante ni banner: se quitaron el 11-11-2026 porque tapaban la carta al llegar por el NFC. En escritorio la cabecera lleva solo Carta, Cómo llegar, Preguntas frecuentes y Llamar, siempre en una sola línea (entre 832 y 1023 px se ajustan logo y tipografía); `Inicio` y `Configurar cookies` solo existen en el menú móvil. Desde el menú, al abrirse el panel el foco entra en él y al cerrarlo vuelve al botón de la hamburguesa.
 - Menú móvil: al abrirse atenúa la página (`.menu-fondo`, negro al 55 %, entre la cabecera y la barra inferior), bloquea el scroll del fondo (`html.menu-abierto`, solo por debajo de 52rem), atrapa el foco y se cierra con Esc, tocando fuera o eligiendo una opción; `aria-expanded` y la etiqueta del botón van siempre sincronizados.
@@ -136,17 +137,30 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
   24 horas, con enlaces, `hreflang` y cambio de idioma correctos en las 14 páginas, el aviso en las 7 españolas y
   los mismos precios en cada pareja. El `sitemap.xml` lista las 14 páginas con sus alternativas.
 - Además, C1 a C3 (sin banner ni botón flotante, «Configurar cookies» en todas las páginas, mapa solo con permiso) y S1
-  y S2 (CSP igual en las 15 páginas y en el `.htaccess`; imagen para redes inglesa en /en/).
+  y S2 (CSP igual en las 15 páginas y en el `.htaccess`; imagen para redes inglesa en /en/), 13b (reglas `/ir/` iguales
+  que las del kit) y R1 (genera las páginas de redirección y comprueba cada una).
 
-## Cuando otro local del grupo estrene web
+## Locales del grupo (`/ir/<slug>`)
 
-- Cambia su línea `/ir/<slug>` del `.htaccess` por su dominio.
-- Actualiza `kit-grupo-hostelero-friser/locales.json` y `htaccess-grupo.txt`.
-- Recuerda que lo mismo hay que hacerlo en las demás webs del grupo.
+- Destinos actuales (12-11-2026):
+  - Pub Colonial: `/ir/pub-colonial` → https://pubcolonial.com/ y `/ir/en/pub-colonial` → https://pubcolonial.com/en/
+  - Excalibur Irish Pub: `/ir/excalibur` → https://excaliburirishpub.com/ y `/ir/en/excalibur` → https://excaliburirishpub.com/en/
+  - Restaurante Taberna Asturiana: `/ir/taberna-asturiana` → Google Maps (aún no tiene web; sin versión inglesa).
+- Las páginas en español enlazan a `/ir/<slug>`. Las inglesas, a `/ir/en/<slug>` si esa regla existe en el `.htaccess`
+  (lo decide solo `herramientas/generar-ingles.js`); si no, a `/ir/<slug>`. Los tres locales llevan en el pie el mismo
+  aviso para lectores («se abre en otra web» / «opens another website») y el mismo icono, tengan web o no.
+- Cuando otro local estrene web: cambia su línea `/ir/<slug>` del `.htaccess` por su dominio (302, sin `NE`) y, si tiene
+  versión inglesa, añade `/ir/en/<slug>`. Actualiza `kit-grupo-hostelero-friser/locales.json` (`destino_ir`,
+  `destino_ir_en`, `web_activa`) y `htaccess-grupo.txt` (el kit incluye también `/ir/en/la-bodeguita` para las otras webs).
+  Regenera la versión inglesa. Lo mismo hay que hacerlo en las demás webs del grupo.
+- En GitHub Pages, cada redirección de `.htaccess` (`/mesa`, `/barra`, `/ir/…`) se publica como página con meta refresh
+  generada por `.github/scripts/preparar-pages.js`: `noindex`, la misma CSP, los estilos de la web, el logo y un enlace
+  visible «Si no se abre, pulsa aquí» / «If it doesn’t open, tap here» (en `/ir/en/…`, el inglés primero). GitHub añade
+  antes la barra final (`/mesa` → 301 → `/mesa/`).
 
 ## Después de cualquier cambio
 
-- Sube el `?v=` del CSS y el JS (está en todos los HTML; hay que cambiarlo en todos a la vez). Si el cambio es el mismo día, añade una letra o un punto al final (`20261111c`): el `.htaccess` da caché de un año e `immutable` a todo recurso con `?v=`, así que sin cambiar el valor el navegador no verá el cambio.
+- Sube el `?v=` del CSS y el JS (está en todos los HTML; hay que cambiarlo en todos a la vez). Si el cambio es el mismo día, añade una letra o un punto al final (`20261111d`): el `.htaccess` da caché de un año e `immutable` a todo recurso con `?v=`, así que sin cambiar el valor el navegador no verá el cambio.
 - Actualiza `lastmod` en `sitemap.xml` y la fecha de «Última actualización» si se tocan los legales.
 - Repite la verificación.
 
