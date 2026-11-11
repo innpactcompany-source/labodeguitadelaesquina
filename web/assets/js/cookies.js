@@ -1,3 +1,6 @@
+// Consentimiento para el mapa de Google, lo único de terceros que tiene la web.
+// No hay aviso al entrar: el permiso se pide en el recuadro del mapa («Cargar mapa») y se cambia en el panel
+// «Configurar cookies» (menú del móvil, pie y política de cookies). Sin permiso no se carga nada de Google.
 (function () {
   var d = document;
   var CLAVE = 'consentimiento-cookies';
@@ -22,27 +25,10 @@
     } catch (e) { return false; }
   }
 
-  var banner = d.querySelector('.cookies-banner');
   var panel = d.querySelector('.cookies-panel');
-  var fab = d.querySelector('.cookies-fab');
   var caja = panel && panel.querySelector('.cookies-panel__caja');
   var casilla = d.getElementById('ck-mapa');
   var origen = null;
-
-  // El botón flotante se esconde mientras pasa por encima de una foto a todo el ancho (portada y cierre de Inicio)
-  var fotosAncha = d.querySelectorAll('.portada__foto, .cierre__foto');
-  function vigilarBoton() {
-    if (!fab || !fotosAncha.length) return;
-    var r = fab.getBoundingClientRect();
-    var cubre = false;
-    if (r.width) [].forEach.call(fotosAncha, function (f) {
-      var q = f.getBoundingClientRect();
-      if (q.bottom > r.top && q.top < r.bottom && q.right > r.left && q.left < r.right) cubre = true;
-    });
-    fab.classList.toggle('cookies-fab--oculto', cubre);
-    if (cubre) { fab.setAttribute('aria-hidden', 'true'); fab.setAttribute('tabindex', '-1'); }
-    else { fab.removeAttribute('aria-hidden'); fab.removeAttribute('tabindex'); }
-  }
 
   function mapaActivo() { var c = leer(); return !!(c && c.mapa); }
 
@@ -69,48 +55,32 @@
   }
   function aplicar() { if (mapaActivo()) cargarMapas(); else quitarMapas(); }
 
-  function cerrarBanner() { if (banner) banner.hidden = true; if (fab) fab.hidden = false; }
-  function decidir(mapa) { guardar(mapa); cerrarBanner(); cerrarPanel(); aplicar(); }
-
   function abrirPanel(desde) {
     if (!panel) return;
     // Si se abre desde el menú móvil, al cerrar el foco vuelve al botón de la hamburguesa
     origen = desde && desde.closest && desde.closest('.nav') ? d.querySelector('.menu-btn') : (desde || d.activeElement);
     if (casilla) casilla.checked = mapaActivo();
     panel.hidden = false;
-    if (banner) banner.hidden = true;
     caja.focus();
   }
   function cerrarPanel() {
     if (!panel || panel.hidden) return;
     panel.hidden = true;
-    if (!leer() && banner) banner.hidden = false;
-    if (leer() && fab) fab.hidden = false;
     if (origen && origen.focus && d.contains(origen) && !origen.hidden) origen.focus();
     origen = null;
   }
 
-  if (banner && !leer()) { banner.hidden = false; } else if (fab) { fab.hidden = false; }
   aplicar();
-  vigilarBoton();
-  window.addEventListener('scroll', vigilarBoton, { passive: true });
-  window.addEventListener('resize', vigilarBoton);
-  window.addEventListener('load', vigilarBoton);
 
   [].forEach.call(d.querySelectorAll('[data-mapa-cargar]'), function (b) {
     b.hidden = false;
-    b.addEventListener('click', function () { guardar(true); cerrarBanner(); aplicar(); });
+    b.addEventListener('click', function () { guardar(true); aplicar(); });
   });
   [].forEach.call(d.querySelectorAll('[data-cookies-abrir]'), function (b) {
     b.addEventListener('click', function (e) { if (e.preventDefault) e.preventDefault(); abrirPanel(b); });
   });
-  if (banner) {
-    banner.querySelector('[data-cookies-aceptar]').addEventListener('click', function () { decidir(true); });
-    banner.querySelector('[data-cookies-rechazar]').addEventListener('click', function () { decidir(false); });
-    banner.querySelector('[data-cookies-configurar]').addEventListener('click', function (e) { abrirPanel(e.currentTarget); });
-  }
   if (panel) {
-    panel.querySelector('[data-cookies-guardar]').addEventListener('click', function () { decidir(!!(casilla && casilla.checked)); });
+    panel.querySelector('[data-cookies-guardar]').addEventListener('click', function () { guardar(!!(casilla && casilla.checked)); cerrarPanel(); aplicar(); });
     panel.querySelector('[data-cookies-cerrar]').addEventListener('click', cerrarPanel);
     panel.addEventListener('click', function (e) { if (e.target === panel) cerrarPanel(); });
     d.addEventListener('keydown', function (e) {

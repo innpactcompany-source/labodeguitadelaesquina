@@ -196,6 +196,8 @@ function generarIngles(t, es) {
     .replace(/(<link rel="canonical" href="[^"]+">)/, `$1\n${alternos(es)}`)
     // En español, «Cómo llegar» sirve para la sección y para el botón que abre la ruta en Google Maps; en inglés el botón es «Directions»
     .replace(/(<a [^>]*href="https:\/\/www\.google\.com\/maps\/dir\/[^"]*"[^>]*>(?:(?!<\/a>)[\s\S])*?<span>)Getting here(<\/span>)/g, '$1Directions$2')
+    // Imagen para redes con el texto en inglés («BREAKFAST · BRUNCH · TERRACE»)
+    .replace(/(<meta (?:property="og:image"|name="twitter:image") content="https:\/\/labodeguitadelaesquina\.com\/assets\/marca\/)og-image\.jpg"/g, '$1og-image-en.jpg"')
     .split(WHATSAPP_ES).join(WHATSAPP_EN)
     .replace(/([?&](?:amp;)?hl=)es\b/g, '$1en');
   // En el menú de la cabecera, la cola de la «Q» de Cinzel hace que «FAQ» parezca «FAQ_»: el enlace dice «Questions»

@@ -13,16 +13,26 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
   archivo.
 - `/mesa` y `/barra` son las redirecciones de las pegatinas NFC en `.htaccess`. No se cambian sin
   pedirlo y nunca se crean como carpetas. Lo mismo vale para `/ir/…` (locales del grupo).
-- Con la CSP del `.htaccess` no puede haber `style` ni `script` en línea (el JSON-LD sí). Si algo choca,
-  se ajusta la directiva concreta, no se quita.
+- CSP: va en un `<meta http-equiv="Content-Security-Policy">` al principio del `<head>` de cada página, seguida de
+  `<meta name="referrer" content="strict-origin-when-cross-origin">`, porque GitHub Pages no envía cabeceras. Es la
+  misma en las 15 páginas y en el `.htaccess` (que además añade `frame-ancestors`). Solo permite lo propio y el
+  iframe de Google Maps (`frame-src https://www.google.com https://maps.google.com`). No puede haber `style` ni
+  `script` en línea (el JSON-LD sí). Si algo choca, se ajusta la directiva concreta, no se quita. Si cambias la CSP,
+  cámbiala en las páginas en español y en el `.htaccess`; la versión inglesa se regenera.
+- nosniff, X-Frame-Options y Permissions-Policy están en el `.htaccess`, pero en GitHub Pages no se pueden enviar
+  (no hay `<meta>` equivalente). Haría falta un servicio delante, como Cloudflare, o volver a Hostinger.
 - Sin peticiones a terceros antes del consentimiento: nada de Google Fonts, CDN, analítica ni píxeles.
   Google Maps solo se carga si se acepta.
+- Cookies: no hay banner al entrar ni botón flotante. El permiso del mapa se pide solo en su recuadro («Cargar mapa»,
+  en Inicio y en «Cómo llegar») y se da o se retira en el panel «Configurar cookies» (menú del móvil, pie de todas
+  las páginas y botón de la política de cookies). La política de cookies describe exactamente esto: si cambia el
+  funcionamiento, cambia el texto en español y su traducción.
 - Solo castellano de España, tratando de tú. Las respuestas, los botones y los avisos hablan de tú; solo las preguntas del cliente al local de la FAQ conservan «¿Tenéis…?» y «¿Ponéis…?». El JSON-LD de la FAQ sale del mismo texto y debe coincidir palabra por palabra. Bizum solo aparece como «Bizum no» (FAQ).
 
 ## Estructura
 
 - Páginas: `index.html`, `carta/`, `como-llegar/`, `preguntas-frecuentes/`, `aviso-legal/`,
-  `privacidad/`, `cookies/` y `404.html`. La cabecera, el pie, la barra móvil y el banner de cookies están
+  `privacidad/`, `cookies/` y `404.html`. La cabecera, el pie, la barra móvil y el panel de cookies están
   repetidos en cada HTML: si se cambian, se cambian en todas las páginas.
 - CSS: `assets/css/base.css` (tokens, componentes, impresión) y `carta.css` (solo /carta/).
 - JS (todo con `defer`): `main.js` (menú y aparición de secciones), `cookies.js` (consentimiento y mapa),
@@ -32,15 +42,24 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
   con el mismo nombre y la misma proporción. El encuadre de cada una está en las variables `--foco-*` de
   `base.css`.
 - Inicio precarga también Libre Baskerville (la usa el óvalo de la portada): sin ello el óvalo cambiaba de alto al cargar la fuente y la home perdía CLS 0. La portada lleva `background-color` marrón y degradado detrás de la foto.
+- Foto de portada (desde el 11-11-2026): la de la terraza (`bodeguita-terraza-*`), con el encuadre en `--foco-portada` y
+  `--foco-portada-movil`. La de la barra salió de la portada porque tenía la decoración de Halloween; sigue en
+  `assets/img/` (`bodeguita-barra-*`, también la versión `-movil`). **Cuando lleguen las fotos de Navidad, la de la barra
+  vuelve a la portada**: precarga (`<link rel="preload" as="image">`, con su versión móvil), `srcset` del
+  `<picture class="portada__foto">`, primer elemento de `image` en el JSON-LD de todas las páginas y los dos `--foco-portada`
+  (la barra usaba `50% 40%` en escritorio y `50% 50%` en móvil). Luego, `node herramientas/generar-ingles.js`.
 - Texto: nada visible baja de 13 px (salvo lo marcado solo para lectores). /carta/ mide como máximo 960 px de ancho y sus pestañas (Tostadas, Bocadillos, Dulces y cafés) quedan fijas bajo la cabecera, con `--alto-chips` para el desplazamiento de anclas.
-- Botón flotante de cookies: solo existe desde 1280 px (por debajo es `display: none`): hace falta que el hueco lateral del contenido (1152 px) sea mayor que el botón con su zona pulsable (54 px a cada lado), contando una barra de scroll de unos 15 px; a 1184 y a 1260 px solapaba texto. Además se esconde (`.cookies-fab--oculto`) mientras pasa sobre la foto a todo el ancho de la portada o del cierre de Inicio; abajo a la izquierda, 40 px, con zona pulsable de 44 px (`::after`). En móvil el acceso es «Configurar cookies» (`<li class="nav__cookies">`, después de Inicio, Carta, Cómo llegar y Preguntas frecuentes y antes de los botones Llamar y WhatsApp), y el del pie. Entre 832 y 1279 px el único acceso a las cookies es el enlace del pie. En escritorio la cabecera lleva solo Carta, Cómo llegar, Preguntas frecuentes y Llamar, siempre en una sola línea (entre 832 y 1023 px se ajustan logo y tipografía); `Inicio` y `Configurar cookies` solo existen en el menú móvil. Desde el menú, al abrirse el panel el foco entra en él y al cerrarlo vuelve al botón de la hamburguesa.
+- Acceso a las cookies: en móvil, «Configurar cookies» (`<li class="nav__cookies">`, después de Inicio, Carta, Cómo llegar y Preguntas frecuentes y antes de los botones Llamar y WhatsApp) y el del pie; desde 832 px, solo el del pie (y el botón de la política de cookies). No hay botón flotante ni banner: se quitaron el 11-11-2026 porque tapaban la carta al llegar por el NFC. En escritorio la cabecera lleva solo Carta, Cómo llegar, Preguntas frecuentes y Llamar, siempre en una sola línea (entre 832 y 1023 px se ajustan logo y tipografía); `Inicio` y `Configurar cookies` solo existen en el menú móvil. Desde el menú, al abrirse el panel el foco entra en él y al cerrarlo vuelve al botón de la hamburguesa.
 - Menú móvil: al abrirse atenúa la página (`.menu-fondo`, negro al 55 %, entre la cabecera y la barra inferior), bloquea el scroll del fondo (`html.menu-abierto`, solo por debajo de 52rem), atrapa el foco y se cierra con Esc, tocando fuera o eligiendo una opción; `aria-expanded` y la etiqueta del botón van siempre sincronizados.
 - /carta/: al pulsar una pestaña el foco pasa al `h2` de la sección (`tabindex="-1"`); sin JS funciona como ancla normal.
 - Home en móvil (< 700 px): «Lo que encontrarás» es un carrusel horizontal con `scroll-snap`, tarjetas del 82 % y `tabindex="0"` en el contenedor, que `main.js` quita por encima de 700 px.
 - Imagen para redes: `assets/marca/og-image.jpg` mide 1200 x 630, pesa unos 84 KB y está hecha con la cartela, Cinzel y Source Sans 3 (JPEG 4:4:4); `og:image:width/height` deben seguir siendo 1200 y 630.
+  La inglesa, `og-image-en.jpg` (55 KB), es la misma con la línea «BREAKFAST · BRUNCH · TERRACE» (Cinzel 600, 35 px,
+  espaciado 3 px, línea base en y = 400, color #F4EEDB, sobre el degradado vertical original). El generador la pone en
+  `og:image` y `twitter:image` de /en/.
 - Títulos legales: los números de los `h2` (`1.`, `2.`…) van en `<span class="num">` con Source Sans 3 en negrita, porque en Cinzel el 1 se lee como una I.
 - Zona pulsable: todo enlace o botón mide al menos 44 x 44 px en móvil (los enlaces en línea la amplían con un `::after` de `base.css`, sin cambiar el aspecto). El pie y el panel de cookies no llevan `h1`–`h6`: sus títulos son `<p class="pie__titulo">` y `<p class="cookies-panel__titulo">`.
-- Móvil: el banner de cookies ocupa como máximo el 22 % de la altura y queda sobre la barra inferior (`--alto-barra`); la portada limita la foto a `min(42svh, 340px)` (`--foto-movil`) para que estado, `h1` y botones se vean sin scroll a 375 × 667 con el banner ya cerrado.
+- Móvil: la portada limita la foto a `min(42svh, 340px)` (`--foto-movil`) para que estado, `h1` y botones se vean sin scroll a 375 × 667. La barra inferior (`--alto-barra`) no tapa el final de ninguna página.
 - `robots.txt` solo lleva `Allow: /` y el sitemap. El `.htaccess` de `web/` no añade `X-Robots-Tag`. En `hostingersite.com` Hostinger sirve su propio `robots.txt` con `Disallow: /` para Googlebot, aunque el archivo sea correcto: en el dominio propio no pasa.
 - Tipografías de /carta/: solo Cinzel y Source Sans 3 (Libre Baskerville no se usa en esa página).
 
@@ -116,6 +135,8 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
 - `node pruebas/verificar.js` comprueba (EN1 a EN10) que `web/en/` está al día, sin restos de español ni horas de
   24 horas, con enlaces, `hreflang` y cambio de idioma correctos en las 14 páginas, el aviso en las 7 españolas y
   los mismos precios en cada pareja. El `sitemap.xml` lista las 14 páginas con sus alternativas.
+- Además, C1 a C3 (sin banner ni botón flotante, «Configurar cookies» en todas las páginas, mapa solo con permiso) y S1
+  y S2 (CSP igual en las 15 páginas y en el `.htaccess`; imagen para redes inglesa en /en/).
 
 ## Cuando otro local del grupo estrene web
 
@@ -125,7 +146,7 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
 
 ## Después de cualquier cambio
 
-- Sube el `?v=` del CSS y el JS (está en todos los HTML; hay que cambiarlo en todos a la vez). Si el cambio es el mismo día, añade una letra o un punto al final (`20261111b`): el `.htaccess` da caché de un año e `immutable` a todo recurso con `?v=`, así que sin cambiar el valor el navegador no verá el cambio.
+- Sube el `?v=` del CSS y el JS (está en todos los HTML; hay que cambiarlo en todos a la vez). Si el cambio es el mismo día, añade una letra o un punto al final (`20261111c`): el `.htaccess` da caché de un año e `immutable` a todo recurso con `?v=`, así que sin cambiar el valor el navegador no verá el cambio.
 - Actualiza `lastmod` en `sitemap.xml` y la fecha de «Última actualización» si se tocan los legales.
 - Repite la verificación.
 
@@ -168,7 +189,8 @@ Los scripts de `pruebas/` hacen casi todo: `node pruebas/verificar.js` (puntos 1
   `web/` con `.github/scripts/preparar-pages.js` y la publica. No hay compilación. Para publicar un cambio:
   `git add -A && git commit -m "…" && git push` (con `gh` ya autorizado en este equipo).
 - GitHub Pages no lee `.htaccess`: la copia publicada convierte `/mesa`, `/barra` e `/ir/<local>` en páginas HTML
-  de redirección (meta refresh) y no aplica la CSP ni las cabeceras de caché. `web/` no cambia: el `.htaccess`
+  de redirección (meta refresh) y no envía ninguna cabecera de seguridad ni de caché (la CSP y la política de
+  referer van en `<meta>` en cada página). `web/` no cambia: el `.htaccess`
   sigue siendo la referencia si algún día se vuelve a Hostinger.
 - URL temporal: https://innpactcompany-source.github.io/labodeguitadelaesquina/ (rutas reescritas con el prefijo del
   repositorio, `noindex` y `robots.txt` que lo bloquea todo).

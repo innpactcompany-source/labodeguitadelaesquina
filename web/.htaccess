@@ -54,9 +54,11 @@ RewriteRule ^ https://labodeguitadelaesquina.com%{REQUEST_URI} [R=301,L]
   </FilesMatch>
   # Recursos con ?v= (css, js, imágenes, svg y fuentes): un año e immutable
   Header set Cache-Control "public, max-age=31536000, immutable" env=CACHE_INMUTABLE
+  # Seguridad. En GitHub Pages este archivo no se usa: allí la CSP y la política de referer van en <meta> en cada página
+  # y nosniff, X-Frame-Options y Permissions-Policy no se pueden enviar. Mantener la misma CSP en los dos sitios.
   Header always set X-Content-Type-Options "nosniff"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set X-Frame-Options "SAMEORIGIN"
-  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
-  Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; font-src 'self'; frame-src https://www.google.com https://maps.google.com; connect-src 'self'; base-uri 'self'; form-action 'self'"
+  Header always set Permissions-Policy "accelerometer=(), autoplay=(), browsing-topics=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+  Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; font-src 'self'; frame-src https://www.google.com https://maps.google.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; frame-ancestors 'self'"
 </IfModule>
