@@ -1,4 +1,4 @@
-﻿# La Bodeguita de la Esquina Â· web
+# La Bodeguita de la Esquina Â· web
 
 Web de la cafeterÃ­a-bar La Bodeguita de la Esquina (C/ BenicarlÃ³, 25, Benimaclet, ValÃ¨ncia), para
 https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni paso de build.
