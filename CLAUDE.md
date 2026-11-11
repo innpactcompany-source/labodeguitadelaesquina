@@ -53,6 +53,11 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
 - Acceso a las cookies: en móvil, «Configurar cookies» (`<li class="nav__cookies">`, después de Inicio, Carta, Cómo llegar y Preguntas frecuentes y antes de los botones Llamar y WhatsApp) y el del pie; desde 832 px, solo el del pie (y el botón de la política de cookies). No hay botón flotante ni banner: se quitaron el 11-11-2026 porque tapaban la carta al llegar por el NFC. En escritorio la cabecera lleva solo Carta, Cómo llegar, Preguntas frecuentes y Llamar, siempre en una sola línea (entre 832 y 1023 px se ajustan logo y tipografía); `Inicio` y `Configurar cookies` solo existen en el menú móvil. Desde el menú, al abrirse el panel el foco entra en él y al cerrarlo vuelve al botón de la hamburguesa.
 - Menú móvil: al abrirse atenúa la página (`.menu-fondo`, negro al 55 %, entre la cabecera y la barra inferior), bloquea el scroll del fondo (`html.menu-abierto`, solo por debajo de 52rem), atrapa el foco y se cierra con Esc, tocando fuera o eligiendo una opción; `aria-expanded` y la etiqueta del botón van siempre sincronizados.
 - /carta/: al pulsar una pestaña el foco pasa al `h2` de la sección (`tabindex="-1"`); sin JS funciona como ancla normal.
+- Barra inferior del móvil (`.barra-movil`): en Inicio (español e inglés) lleva `barra-movil--auto` y solo aparece cuando los
+  botones de la portada (`.portada .btn-grupo`) ya no se ven (`main.js`, con IntersectionObserver), entrando y saliendo
+  desde abajo en 0,25 s; oculta tiene `visibility: hidden`, así que no recibe el foco. Con `prefers-reduced-motion`
+  aparece al instante, sin desplazarse. Sin JS se queda oculta en Inicio (la portada tiene los mismos tres botones). En el
+  resto de páginas se ve siempre.
 - Home en móvil (< 700 px): «Lo que encontrarás» es un carrusel horizontal con `scroll-snap`, tarjetas del 82 % y `tabindex="0"` en el contenedor, que `main.js` quita por encima de 700 px.
 - Imagen para redes: `assets/marca/og-image.jpg` mide 1200 x 630, pesa unos 84 KB y está hecha con la cartela, Cinzel y Source Sans 3 (JPEG 4:4:4); `og:image:width/height` deben seguir siendo 1200 y 630.
   La inglesa, `og-image-en.jpg` (55 KB), es la misma con la línea «BREAKFAST · BRUNCH · TERRACE» (Cinzel 600, 35 px,
@@ -160,7 +165,7 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
 
 ## Después de cualquier cambio
 
-- Sube el `?v=` del CSS y el JS (está en todos los HTML; hay que cambiarlo en todos a la vez). Si el cambio es el mismo día, añade una letra o un punto al final (`20261111d`): el `.htaccess` da caché de un año e `immutable` a todo recurso con `?v=`, así que sin cambiar el valor el navegador no verá el cambio.
+- Sube el `?v=` del CSS y el JS (está en todos los HTML; hay que cambiarlo en todos a la vez). Si el cambio es el mismo día, añade una letra o un punto al final (`20261112a`): el `.htaccess` da caché de un año e `immutable` a todo recurso con `?v=`, así que sin cambiar el valor el navegador no verá el cambio.
 - Actualiza `lastmod` en `sitemap.xml` y la fecha de «Última actualización» si se tocan los legales.
 - Repite la verificación.
 
@@ -169,6 +174,10 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
 Comprueba cada punto con tus herramientas de búsqueda o con un script, y corrige antes de entregar.
 Los scripts de `pruebas/` hacen casi todo: `node pruebas/verificar.js` (puntos 1 a 8, 10, 12 y 13),
 `node pruebas/horario.test.js` (punto 9; incluye los cambios de hora y cualquier zona del equipo) y `node pruebas/contraste.js` (punto 11).
+`node pruebas/navegador.js` abre la web en Chrome sin ventana (sin dependencias; necesita Chrome instalado o la variable
+`CHROME`) y comprueba lo que solo se ve ejecutando la página: la barra inferior (B1 a B4), la consola sin avisos de CSP,
+ninguna petición a terceros sin permiso y el mapa (N1 a N4). Con una URL (`node pruebas/navegador.js https://labodeguitadelaesquina.com`)
+se ejecuta contra el dominio.
 
 1. No hay `name="author"` ni `name="generator"`, ni textos tipo «diseñado por», «desarrollado por»,
    «hecho por» o «powered by» en `web/`.

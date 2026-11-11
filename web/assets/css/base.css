@@ -471,6 +471,13 @@ a.grupo__enlace:hover { border-color: var(--g-acento); }
 .barra-movil .icono { width: 24px; height: 24px; }
 .barra-movil__llamar { background: var(--rotulo-rojo); }
 body { padding-bottom: calc(var(--alto-barra) + env(safe-area-inset-bottom)); }
+/* En Inicio la barra solo aparece cuando los botones de la portada ya no se ven (main.js, con IntersectionObserver).
+   Oculta no se ve ni recibe el foco (visibility). Sin JS se queda oculta: la portada tiene los mismos tres botones. */
+.barra-movil--auto { visibility: hidden; transform: translateY(100%); transition: transform .25s ease, visibility 0s linear .25s; }
+.barra-movil--auto.barra-movil--visible { visibility: visible; transform: none; transition: transform .25s ease, visibility 0s; }
+/* Con prefers-reduced-motion no se desplaza: aparece y desaparece al instante (la regla general quita las transiciones) */
+@media (prefers-reduced-motion: reduce) { .barra-movil--auto { transform: none; } }
+.barra-movil-oculta .menu-fondo { bottom: 0; }
 @media (min-width: 52rem) {
   :root { --alto-barra: 0px; }
   .barra-movil { display: none; }

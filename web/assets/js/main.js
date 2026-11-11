@@ -64,6 +64,17 @@
     window.addEventListener('resize', ajustar);
   }
 
+  // ---------- Barra inferior de Inicio: solo cuando los botones de la portada no se ven ----------
+  var barra = d.querySelector('.barra-movil--auto');
+  if (barra) {
+    var botones = d.querySelector('.portada .btn-grupo');
+    var verBarra = function (ver) { barra.classList.toggle('barra-movil--visible', ver); html.classList.toggle('barra-movil-oculta', !ver); };
+    if (botones && 'IntersectionObserver' in window) {
+      verBarra(false);
+      new IntersectionObserver(function (es) { verBarra(!es[es.length - 1].isIntersecting); }).observe(botones);
+    } else verBarra(true);
+  }
+
   // ---------- Portada: fundido de entrada si la foto aún no ha cargado ----------
   var foto = d.querySelector('.portada__foto img');
   if (foto && !foto.complete) {
