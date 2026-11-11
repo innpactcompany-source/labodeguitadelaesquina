@@ -9,6 +9,8 @@ const rel = f => path.relative(WEB, f).replace(/\\/g, '/');
 const leer = f => fs.readFileSync(f, 'utf8');
 // El archivo de verificación de Google Search Console (googleXXXX.html) no es una página de la web
 const htmls = todos.filter(f => f.endsWith('.html') && !/[\\/]google[0-9a-f]+\.html$/.test(f));
+// Páginas en español (la versión en inglés, en web/en/, tiene sus propias comprobaciones al final)
+const htmlsEs = htmls.filter(f => !rel(f).startsWith('en/'));
 let errores = 0;
 const ok = (n, c, d = '') => { console.log(`${c ? 'OK   ' : 'FALLA'} ${n}${d ? ' · ' + d : ''}`); if (!c) errores++; };
 
@@ -185,10 +187,58 @@ const legales = ['aviso-legal', 'privacidad', 'cookies'].map(n => leer(path.join
 const h2Legales = legales.flatMap(h => [...h.matchAll(/<h2>([\s\S]*?)<\/h2>/g)].map(m => m[1]));
 ok('25. Títulos legales numerados: cada número va en <span class="num"> y el texto del título no cambia', h2Legales.length >= 15 && h2Legales.every(t => /^<span class="num">\d+\.<\/span> /.test(t)) && h2Legales.every(t => /^\d+\. \S/.test(t.replace(/<[^>]+>/g, ''))), h2Legales.length + ' títulos');
 const cssBase = leer(path.join(WEB, 'assets/css/base.css'));
-ok('26. Menú: orden Inicio, Carta, Cómo llegar, Preguntas, Configurar cookies y después Llamar y WhatsApp; la página actual con aria-current; botón flotante solo desde 1280 px', htmls.every(f => { const t = leer(f); const n = t.indexOf('<nav class="nav"'); const menu = t.slice(n, t.indexOf('</nav>', n)); const orden = [...menu.matchAll(/<li[^>]*><a href="([^"]+)"[^>]*>([^<]*)<\/a><\/li>/g)].map(m => m[2]); const okOrden = orden.join('|') === 'Inicio|Carta|Cómo llegar|Preguntas frecuentes|Configurar cookies' && menu.indexOf('class="nav__movil"') > menu.indexOf('nav__cookies') && /<li class="nav__inicio"><a href="\/"/.test(menu); const actuales = (menu.match(/aria-current="page"/g) || []).length; const esperado = { 'index.html': 'Inicio', 'carta/index.html': 'Carta', 'como-llegar/index.html': 'Cómo llegar', 'preguntas-frecuentes/index.html': 'Preguntas frecuentes' }[rel(f)]; const okActual = esperado ? new RegExp('aria-current="page">' + esperado + '<').test(menu) && actuales === 1 : actuales === 0; return okOrden && okActual; }) && /@media \(max-width: 1279px\) \{ \.cookies-fab \{ display: none; \} \}/.test(cssBase) && /rgba\(0, 0, 0, \.55\)/.test(cssBase) && /menu-abierto/.test(cssBase));
+ok('26. Menú: orden Inicio, Carta, Cómo llegar, Preguntas, Configurar cookies y después Llamar y WhatsApp; la página actual con aria-current; botón flotante solo desde 1280 px', htmlsEs.every(f => { const t = leer(f); const n = t.indexOf('<nav class="nav"'); const menu = t.slice(n, t.indexOf('</nav>', n)); const orden = [...menu.matchAll(/<li[^>]*><a href="([^"]+)"[^>]*>([^<]*)<\/a><\/li>/g)].map(m => m[2]); const okOrden = orden.join('|') === 'Inicio|Carta|Cómo llegar|Preguntas frecuentes|Configurar cookies' && menu.indexOf('class="nav__movil"') > menu.indexOf('nav__cookies') && /<li class="nav__inicio"><a href="\/"/.test(menu); const actuales = (menu.match(/aria-current="page"/g) || []).length; const esperado = { 'index.html': 'Inicio', 'carta/index.html': 'Carta', 'como-llegar/index.html': 'Cómo llegar', 'preguntas-frecuentes/index.html': 'Preguntas frecuentes' }[rel(f)]; const okActual = esperado ? new RegExp('aria-current="page">' + esperado + '<').test(menu) && actuales === 1 : actuales === 0; return okOrden && okActual; }) && /@media \(max-width: 1279px\) \{ \.cookies-fab \{ display: none; \} \}/.test(cssBase) && /rgba\(0, 0, 0, \.55\)/.test(cssBase) && /menu-abierto/.test(cssBase));
 // coherencia
 ok('Extra. Teléfono y dirección presentes en todas las páginas', htmls.every(f => /682 26 25 87/.test(leer(f)) && /Benicarló, 25/.test(leer(f))));
 const verV = [...new Set(htmls.flatMap(f => [...leer(f).matchAll(/\?v=([\w.]+)/g)].map(m => m[1])))];
 ok('Extra. Un solo ?v= en todos los CSS y JS', verV.length === 1, verV.join(','));
+
+// ---------- Versión en inglés (web/en/) ----------
+const PARES = { '': 'en', 'carta': 'en/menu', 'como-llegar': 'en/getting-here', 'preguntas-frecuentes': 'en/faq', 'aviso-legal': 'en/legal-notice', 'privacidad': 'en/privacy', 'cookies': 'en/cookies' };
+const pag = d => path.join(WEB, d, 'index.html');
+const url = d => 'https://labodeguitadelaesquina.com/' + (d ? d + '/' : '');
+const visible = t => t.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<(?:[^>"]|"[^"]*")*?\s(?:alt|aria-label)="([^"]*)"[^>]*>/g, ' $1 ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ');
+let comprobado = '';
+try { comprobado = require('child_process').execFileSync(process.execPath, [path.join(__dirname, '..', 'herramientas', 'generar-ingles.js'), '--comprobar'], { encoding: 'utf8', stdio: 'pipe' }); } catch (e) { comprobado = ''; }
+ok('EN1. web/en/ está al día con las páginas en español y con herramientas/traduccion-en.json', /al día/.test(comprobado));
+ok('EN2. Cada página en inglés existe, con lang="en", canonical propio y hreflang es/en/x-default recíprocos', Object.entries(PARES).every(([es, en]) => {
+  if (!fs.existsSync(pag(en))) return false;
+  const tEs = leer(pag(es)), tEn = leer(pag(en));
+  const alt = `<link rel="alternate" hreflang="es" href="${url(es)}">\n<link rel="alternate" hreflang="en" href="${url(en)}">\n<link rel="alternate" hreflang="x-default" href="${url(es)}">`;
+  return /<html lang="en">/.test(tEn) && tEn.includes(`<link rel="canonical" href="${url(en)}">`) && tEs.includes(alt) && tEn.includes(alt) && /<meta property="og:locale" content="en_GB">/.test(tEn);
+}));
+ok('EN3. Botón de idioma en la cabecera y enlace en el pie, cada uno a la misma página en el otro idioma', Object.entries(PARES).every(([es, en]) => {
+  const tEs = leer(pag(es)), tEn = leer(pag(en)), rEs = '/' + (es ? es + '/' : ''), rEn = '/' + en + '/';
+  return tEs.includes(`<a class="idioma" href="${rEn}" hreflang="en" lang="en">`) && tEs.includes(`<li class="pie__idioma"><a href="${rEn}" hreflang="en" lang="en">English</a></li>`)
+    && tEn.includes(`<a class="idioma" href="${rEs}" hreflang="es" lang="es">`) && tEn.includes(`<li class="pie__idioma"><a href="${rEs}" hreflang="es" lang="es">Español</a></li>`);
+}) && /<a class="idioma" href="\/en\/"/.test(leer(path.join(WEB, '404.html'))));
+ok('EN4. Menú en inglés: Home, Menu, Getting here, FAQ, Cookie settings, con la página actual marcada', Object.entries(PARES).every(([es, en]) => {
+  const t = leer(pag(en)); const n = t.indexOf('<nav class="nav"'); const menu = t.slice(n, t.indexOf('</nav>', n));
+  const orden = [...menu.matchAll(/<li[^>]*><a href="([^"]+)"[^>]*>([^<]*)<\/a><\/li>/g)];
+  const actual = { 'en': 'Home', 'en/menu': 'Menu', 'en/getting-here': 'Getting here', 'en/faq': 'FAQ' }[en];
+  return orden.map(m => m[2]).join('|') === 'Home|Menu|Getting here|FAQ|Cookie settings' && orden.map(m => m[1]).join('|') === '/en/|/en/menu/|/en/getting-here/|/en/faq/|/en/cookies/'
+    && (actual ? (menu.match(/aria-current="page"/g) || []).length === 1 && menu.includes(`aria-current="page">${actual}<`) : !/aria-current="page"/.test(menu));
+}));
+// Nombres propios y direcciones que se quedan en español
+const PROPIOS = /La Bodeguita de la Esquina|La Bodeguita|Grupo Hostelero Friser|Restaurante Taberna Asturiana|Mantenimiento Industrial Friser, S\.L\.|C\/ Benicarló, 25, bajos 5 y 6|bajos 5 y 6|C\/ Poeta Altet, 22, bajo|Registro Mercantil de Valencia|Calle Benicarló|C\/ Doctor Vicent Zaragoza|consentimiento-cookies|Agencia Española de Protección de Datos|Español|Chivito Bodeguita|Benicarló|València|Café/g;
+const restos = [];
+for (const en of Object.values(PARES)) {
+  const texto = visible(leer(pag(en))).replace(PROPIOS, ' ');
+  const m = texto.match(/\b(de|del|la|las|los|el|y|con|para|que|tu|tus|una|por|desde|carta|horario|abierto|llamar|cómo|más|aquí|sí|también)\b|[ñ¿¡áéíóú]/gi);
+  if (m) restos.push(en + ': ' + [...new Set(m)].join(' '));
+}
+ok('EN5. Sin restos de español en el texto visible ni en alt/aria-label de las páginas en inglés', !restos.length, restos.join(' · '));
+const rotosEn = [];
+for (const en of Object.values(PARES)) for (const m of leer(pag(en)).matchAll(/\shref="(\/[^"#?]*)/g)) {
+  const r = m[1]; if (r.startsWith('/ir/')) continue;
+  const f = path.join(WEB, r.endsWith('/') ? r + 'index.html' : r);
+  if (!fs.existsSync(f)) rotosEn.push(en + ' → ' + r);
+  else if (r.endsWith('/') && !r.startsWith('/en/') && !new RegExp(`href="${r}" hreflang="es"`).test(leer(pag(en)))) rotosEn.push(en + ' → ' + r + ' (página en español sin hreflang)');
+}
+ok('EN6. Enlaces internos de las páginas en inglés: existen y llevan a páginas en inglés (salvo el cambio de idioma)', !rotosEn.length, rotosEn.join(" · "));
+const precios = t => [...t.matchAll(/(\d+),(\d\d)(?:&nbsp;| )€|€(\d+)\.(\d\d)/g)].map(m => (m[1] || m[3]) + '.' + (m[2] || m[4])).join(' ');
+ok('EN7. Mismos precios, en el mismo orden, en la carta y la portada en inglés', ['', 'carta'].every(es => { const a = precios(leer(pag(es))), b = precios(leer(pag(PARES[es]))); return a && a === b; }));
+const mapaWeb = leer(path.join(WEB, 'sitemap.xml'));
+ok('EN8. El sitemap incluye las 14 páginas con sus alternativas de idioma', Object.entries(PARES).every(([es, en]) => mapaWeb.includes(`<loc>${url(es)}</loc>`) && mapaWeb.includes(`<loc>${url(en)}</loc>`)) && (mapaWeb.match(/<url>/g) || []).length === 14 && (mapaWeb.match(/hreflang="en"/g) || []).length === 14);
 console.log(errores ? `\n${errores} comprobaciones con fallos` : '\nTodas las comprobaciones automáticas correctas');
 process.exit(errores ? 1 : 0);

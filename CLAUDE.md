@@ -86,6 +86,21 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
   tartas de Inicio y la pregunta 2 de la FAQ.
 - Son 18 platos con precio. «Cafés más elaborados» no lleva precio ni entra en el JSON-LD.
 
+## Versión en inglés (`web/en/`)
+
+- No se edita a mano: la genera `node herramientas/generar-ingles.js` a partir de las páginas en español, con los
+  textos de `herramientas/traduccion-en.json` («=» deja el texto igual). Si cambias o añades un texto en español,
+  pon su traducción en ese JSON y vuelve a ejecutar el script; si falta alguna, se detiene y dice cuál.
+- El script también mantiene en las páginas en español los `hreflang`, el botón «EN» de la cabecera y el enlace
+  «English» del pie. En inglés el botón es «ES» y lleva a la misma página en español.
+- Rutas: `/en/`, `/en/menu/`, `/en/getting-here/`, `/en/faq/`, `/en/legal-notice/`, `/en/privacy/`, `/en/cookies/`.
+  Precios en formato inglés (`€3.50`); direcciones y nombres propios en español. Los legales en inglés llevan una
+  nota de que prevalece la versión en español.
+- Los textos que escribe el JavaScript (estado de abierto/cerrado, «Hoy», etiqueta del menú) eligen idioma por
+  `<html lang>`.
+- `node pruebas/verificar.js` comprueba (EN1 a EN8) que `web/en/` está al día, sin restos de español, con enlaces y
+  `hreflang` correctos y los mismos precios. El `sitemap.xml` lista las 14 páginas con sus alternativas.
+
 ## Cuando otro local del grupo estrene web
 
 - Cambia su línea `/ir/<slug>` del `.htaccess` por su dominio.
@@ -94,7 +109,7 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
 
 ## Después de cualquier cambio
 
-- Sube el `?v=` del CSS y el JS (está en todos los HTML; hay que cambiarlo en todos a la vez). Si el cambio es el mismo día, añade una letra o un punto al final (`20261026h`): el `.htaccess` da caché de un año e `immutable` a todo recurso con `?v=`, así que sin cambiar el valor el navegador no verá el cambio.
+- Sube el `?v=` del CSS y el JS (está en todos los HTML; hay que cambiarlo en todos a la vez). Si el cambio es el mismo día, añade una letra o un punto al final (`20261111a`): el `.htaccess` da caché de un año e `immutable` a todo recurso con `?v=`, así que sin cambiar el valor el navegador no verá el cambio.
 - Actualiza `lastmod` en `sitemap.xml` y la fecha de «Última actualización» si se tocan los legales.
 - Repite la verificación.
 

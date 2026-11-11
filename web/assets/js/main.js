@@ -2,6 +2,7 @@
   var d = document;
   var html = d.documentElement;
   html.classList.add('js');
+  var ingles = (html.lang || '').slice(0, 2) === 'en';
 
   // ---------- Menú móvil ----------
   var btn = d.querySelector('.menu-btn');
@@ -18,7 +19,7 @@
       nav.classList.toggle('abierto', v);
       html.classList.toggle('menu-abierto', v);
       btn.setAttribute('aria-expanded', v ? 'true' : 'false');
-      btn.setAttribute('aria-label', v ? 'Cerrar menú' : 'Abrir menú');
+      btn.setAttribute('aria-label', ingles ? (v ? 'Close menu' : 'Open menu') : (v ? 'Cerrar menú' : 'Abrir menú'));
       window.clearTimeout(temporizador);
       if (v) {
         fondo.hidden = false;

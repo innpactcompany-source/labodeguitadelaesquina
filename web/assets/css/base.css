@@ -113,6 +113,19 @@ main { display: block; }
 .nav li a:hover, .nav li a[aria-current="page"] { border-bottom-color: var(--color-oro); }
 .cabecera .cabecera__llamar { display: none; }
 .menu-btn { display: none; margin-left: auto; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border: 2px solid var(--color-oro); border-radius: var(--radio); background: transparent; color: var(--color-texto); cursor: pointer; }
+/* Cambio de idioma: «EN» en las páginas en español y «ES» en las páginas en inglés */
+.idioma { margin-left: auto; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; padding: 0 .5rem; border: 2px solid var(--color-oro); border-radius: var(--radio); color: var(--color-texto); font: 700 .85rem/1 var(--fuente-titulos); letter-spacing: .08em; text-decoration: none; transition: border-color .2s; }
+.idioma:hover { border-color: var(--color-texto); }
+.idioma + .menu-btn { margin-left: -.5rem; }
+.idioma, .menu-btn { flex: none; }
+/* En móviles de menos de 400 px el logo se encoge para que quepan los botones de idioma y de menú */
+@media (max-width: 399px) {
+  .cabecera__in { gap: .5rem; }
+  .idioma + .menu-btn { margin-left: 0; }
+  .logo { flex: 0 1 auto; min-width: 0; }
+  .logo picture { display: block; min-width: 0; }
+  .logo img { width: 100%; height: auto; max-height: 36px; }
+}
 .menu-btn .icono-cerrar { display: none; }
 .menu-btn[aria-expanded="true"] .icono-menu { display: none; }
 .menu-btn[aria-expanded="true"] .icono-cerrar { display: block; }
@@ -136,6 +149,8 @@ main { display: block; }
   .logo img { height: 44px; }
   .cabecera .cabecera__llamar { display: inline-flex; }
   .js .menu-btn { display: none; }
+  .idioma { order: 2; margin-left: 0; }
+  .cabecera .cabecera__llamar { order: 3; }
   .nav, .js .nav { display: block; position: static; margin-left: auto; padding: 0; border: 0; background: none; }
   .nav ul, .js .nav ul { flex-direction: row; gap: .25rem 1.25rem; }
   .js .nav li { border: 0; }
@@ -369,6 +384,7 @@ main { display: block; }
 .legal th, .legal td { padding: .6rem; border: 1px solid var(--color-borde); text-align: left; vertical-align: top; }
 .legal th { background: var(--color-hoy); }
 .legal__fecha { margin-top: 2rem; color: var(--color-texto-suave); font-size: .95rem; }
+.nota-traduccion { margin-top: .5rem; color: var(--color-texto-suave); font-size: .95rem; }
 .tabla-scroll { overflow-x: auto; }
 .error404 { text-align: center; padding-block: 2.5rem 3.5rem; }
 .error404 img { margin: 0 auto 2rem; width: min(100%, 38rem); height: auto; }

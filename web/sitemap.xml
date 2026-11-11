@@ -1,10 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://labodeguitadelaesquina.com/</loc><lastmod>2026-10-26</lastmod></url>
-  <url><loc>https://labodeguitadelaesquina.com/carta/</loc><lastmod>2026-10-26</lastmod></url>
-  <url><loc>https://labodeguitadelaesquina.com/como-llegar/</loc><lastmod>2026-10-26</lastmod></url>
-  <url><loc>https://labodeguitadelaesquina.com/preguntas-frecuentes/</loc><lastmod>2026-10-26</lastmod></url>
-  <url><loc>https://labodeguitadelaesquina.com/aviso-legal/</loc><lastmod>2026-10-26</lastmod></url>
-  <url><loc>https://labodeguitadelaesquina.com/privacidad/</loc><lastmod>2026-10-26</lastmod></url>
-  <url><loc>https://labodeguitadelaesquina.com/cookies/</loc><lastmod>2026-10-26</lastmod></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://labodeguitadelaesquina.com/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/"/>
+  </url>
+  <url><loc>https://labodeguitadelaesquina.com/carta/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/carta/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/menu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/carta/"/>
+  </url>
+  <url><loc>https://labodeguitadelaesquina.com/como-llegar/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/como-llegar/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/getting-here/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/como-llegar/"/>
+  </url>
+  <url><loc>https://labodeguitadelaesquina.com/preguntas-frecuentes/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/preguntas-frecuentes/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/faq/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/preguntas-frecuentes/"/>
+  </url>
+  <url><loc>https://labodeguitadelaesquina.com/aviso-legal/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/aviso-legal/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/legal-notice/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/aviso-legal/"/>
+  </url>
+  <url><loc>https://labodeguitadelaesquina.com/privacidad/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/privacidad/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/privacidad/"/>
+  </url>
+  <url><loc>https://labodeguitadelaesquina.com/cookies/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/cookies/"/>
+  </url>
+  <url><loc>https://labodeguitadelaesquina.com/en/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/"/>
+  </url>
+  <url><loc>https://labodeguitadelaesquina.com/en/menu/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/carta/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/menu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/carta/"/>
+  </url>
+  <url><loc>https://labodeguitadelaesquina.com/en/getting-here/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/como-llegar/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/getting-here/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/como-llegar/"/>
+  </url>
+  <url><loc>https://labodeguitadelaesquina.com/en/faq/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/preguntas-frecuentes/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/faq/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/preguntas-frecuentes/"/>
+  </url>
+  <url><loc>https://labodeguitadelaesquina.com/en/legal-notice/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/aviso-legal/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/legal-notice/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/aviso-legal/"/>
+  </url>
+  <url><loc>https://labodeguitadelaesquina.com/en/privacy/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/privacidad/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/privacidad/"/>
+  </url>
+  <url><loc>https://labodeguitadelaesquina.com/en/cookies/</loc><lastmod>2026-11-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://labodeguitadelaesquina.com/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://labodeguitadelaesquina.com/en/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://labodeguitadelaesquina.com/cookies/"/>
+  </url>
 </urlset>

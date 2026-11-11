@@ -51,7 +51,7 @@
       if (m.querySelector('iframe')) return;
       var f = d.createElement('iframe');
       f.src = m.getAttribute('data-mapa-src');
-      f.title = m.getAttribute('data-mapa-titulo') || 'Mapa';
+      f.title = m.getAttribute('data-mapa-titulo') || (d.documentElement.lang.slice(0, 2) === 'en' ? 'Map' : 'Mapa');
       f.loading = 'lazy';
       f.referrerPolicy = 'no-referrer-when-downgrade';
       var aviso = m.querySelector('.mapa__aviso');

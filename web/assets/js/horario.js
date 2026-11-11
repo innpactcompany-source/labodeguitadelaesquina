@@ -37,19 +37,24 @@
     return estadoEn(m.dia, m.min);
   }
 
-  function texto(e) {
+  // idioma: 'en' para la versión en inglés; cualquier otro valor, español
+  function texto(e, idioma) {
+    if (idioma === 'en') return e.abierto
+      ? 'Open now · closes at ' + hora(e.cierra)
+      : 'Closed · opens ' + (e.abreHoy ? 'today' : 'tomorrow') + ' at ' + hora(e.abre);
     return e.abierto
       ? 'Abierto ahora · cierra a las ' + hora(e.cierra)
       : 'Cerrado · abre ' + (e.abreHoy ? 'hoy' : 'mañana') + ' a las ' + hora(e.abre);
   }
 
   function iniciar(doc) {
+    var idioma = (doc.documentElement.lang || '').slice(0, 2);
     function pintar() {
       var e;
       try { e = estadoAhora(new Date()); } catch (err) { return; }
       [].forEach.call(doc.querySelectorAll('[data-estado-horario]'), function (el) {
         var t = el.querySelector('[data-estado-texto]');
-        if (t) t.textContent = texto(e);
+        if (t) t.textContent = texto(e, idioma);
         el.classList.toggle('estado--abierto', e.abierto);
         el.hidden = false;
       });
@@ -62,7 +67,7 @@
         if (hoy && th && !marca) {
           var s = doc.createElement('span');
           s.className = 'ovalo';
-          s.textContent = 'Hoy';
+          s.textContent = idioma === 'en' ? 'Today' : 'Hoy';
           th.appendChild(s);
         } else if (!hoy && marca) th.removeChild(marca);
       });
