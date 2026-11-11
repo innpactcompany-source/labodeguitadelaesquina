@@ -34,10 +34,10 @@
       "icono": "cubiertos",
       "icono_archivo": "icono-taberna-asturiana.svg",
       "dominio": "tabernaasturiana.com",
-      "web_activa": false,
+      "web_activa": true,
       "place_id": "ChIJ7Scb9KdIYA0RFT_0ckmAVrk",
-      "destino_ir": "https://www.google.com/maps/search/?api=1&query=Restaurante+Taberna+Asturiana&query_place_id=ChIJ7Scb9KdIYA0RFT_0ckmAVrk",
-      "destino_ir_en": null
+      "destino_ir": "https://tabernaasturiana.com/",
+      "destino_ir_en": "https://tabernaasturiana.com/en/"
     },
     {
       "slug": "excalibur",

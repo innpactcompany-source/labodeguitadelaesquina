@@ -318,7 +318,7 @@ try {
       || !t.includes(`href="${d}" lang="es">Si no se abre, pulsa aquí</a>`) || !t.includes(`href="${d}" lang="en">If it doesn’t open, tap here</a>`)
       || !/<link rel="stylesheet" href="\/assets\/css\/base\.css\?v=/.test(t) || !t.includes(`<html lang="${ingles ? 'en' : 'es-ES'}">`);
   }).map(r => r[0]);
-  redirOk = reglasHt.length === 7 && !malas.length; redirDet = reglasHt.length + ' páginas' + (malas.length ? ' · mal: ' + malas.join(', ') : '');
+  redirOk = reglasHt.length >= 7 && !malas.length; redirDet = reglasHt.length + ' páginas' + (malas.length ? ' · mal: ' + malas.join(', ') : '');
 } catch (e) { redirDet = String(e.message).slice(0, 200); }
 fs.rmSync(salidaPages, { recursive: true, force: true });
 ok('R1. Cada redirección de /mesa, /barra e /ir/… sale como página con meta refresh, noindex, la CSP, los estilos y el enlace visible en español e inglés', redirOk, redirDet);

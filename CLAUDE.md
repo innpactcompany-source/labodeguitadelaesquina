@@ -150,10 +150,10 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
 - Destinos actuales (12-11-2026):
   - Pub Colonial: `/ir/pub-colonial` → https://pubcolonial.com/ y `/ir/en/pub-colonial` → https://pubcolonial.com/en/
   - Excalibur Irish Pub: `/ir/excalibur` → https://excaliburirishpub.com/ y `/ir/en/excalibur` → https://excaliburirishpub.com/en/
-  - Restaurante Taberna Asturiana: `/ir/taberna-asturiana` → Google Maps (aún no tiene web; sin versión inglesa).
+  - Restaurante Taberna Asturiana: `/ir/taberna-asturiana` → https://tabernaasturiana.com/ y `/ir/en/taberna-asturiana` → https://tabernaasturiana.com/en/
 - Las páginas en español enlazan a `/ir/<slug>`. Las inglesas, a `/ir/en/<slug>` si esa regla existe en el `.htaccess`
   (lo decide solo `herramientas/generar-ingles.js`); si no, a `/ir/<slug>`. Los tres locales llevan en el pie el mismo
-  aviso para lectores («se abre en otra web» / «opens another website») y el mismo icono, tengan web o no.
+  aviso para lectores («se abre en otra web» / «opens another website») y el mismo icono.
 - Cuando otro local estrene web: cambia su línea `/ir/<slug>` del `.htaccess` por su dominio (302, sin `NE`) y, si tiene
   versión inglesa, añade `/ir/en/<slug>`. Actualiza `kit-grupo-hostelero-friser/locales.json` (`destino_ir`,
   `destino_ir_en`, `web_activa`) y `htaccess-grupo.txt` (el kit incluye también `/ir/en/la-bodeguita` para las otras webs).

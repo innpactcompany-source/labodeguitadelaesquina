@@ -23,7 +23,7 @@ Los enlaces del bloque pasan siempre por `/ir/<slug>` y no apuntan directamente 
 
 ## Pasar un local de Google Maps a su propia web
 
-Cuando un local estrene web (así se hizo con Pub Colonial, `https://pubcolonial.com/`, y Excalibur, `https://excaliburirishpub.com/`, en noviembre de 2026):
+Cuando un local estrene web (así se hizo en noviembre de 2026 con Pub Colonial, `https://pubcolonial.com/`, Excalibur, `https://excaliburirishpub.com/`, y Restaurante Taberna Asturiana, `https://tabernaasturiana.com/`; los cuatro locales tienen ya web propia en español e inglés):
 
 1. En el `.htaccess` de **las cuatro webs**, cambia la línea `RewriteRule ^ir/pub-colonial/?$ …` por `RewriteRule ^ir/pub-colonial/?$ https://pubcolonial.com/ [R=302,L]`.
 2. En `locales.json`, cambia `destino_ir` de ese local por su dominio y pon `web_activa` a `true`.

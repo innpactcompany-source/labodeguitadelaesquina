@@ -19,7 +19,8 @@ RewriteRule ^barra/?$ https://search.google.com/local/writereview?placeid=ChIJ10
 # demás webs del grupo. Si su web tiene versión inglesa, añade /ir/en/<slug>: las páginas en inglés enlazan ahí.
 RewriteRule ^ir/pub-colonial/?$ https://pubcolonial.com/ [R=302,L]
 RewriteRule ^ir/en/pub-colonial/?$ https://pubcolonial.com/en/ [R=302,L]
-RewriteRule ^ir/taberna-asturiana/?$ https://www.google.com/maps/search/?api=1&query=Restaurante+Taberna+Asturiana&query_place_id=ChIJ7Scb9KdIYA0RFT_0ckmAVrk [R=302,L,NE]
+RewriteRule ^ir/taberna-asturiana/?$ https://tabernaasturiana.com/ [R=302,L]
+RewriteRule ^ir/en/taberna-asturiana/?$ https://tabernaasturiana.com/en/ [R=302,L]
 RewriteRule ^ir/excalibur/?$ https://excaliburirishpub.com/ [R=302,L]
 RewriteRule ^ir/en/excalibur/?$ https://excaliburirishpub.com/en/ [R=302,L]
 
