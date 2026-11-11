@@ -25,8 +25,9 @@ if (fs.existsSync(path.join(WEB, 'humans.txt'))) creditos.push('humans.txt');
 ok('1. Sin author/generator ni créditos', !autor.length && !creditos.length, [...autor, ...creditos].join(', '));
 // 2
 const biz = [];
-for (const f of textos) for (const m of leer(f).matchAll(/Bizum(.{0,3})/gi)) if (!/^ no/.test(m[1])) biz.push(rel(f));
-ok('2. «Bizum» solo como «Bizum no»', !biz.length, biz.join(', '));
+// En inglés solo puede aparecer en «We don’t accept Bizum (a Spanish mobile payment app)»
+for (const f of textos) { const t = leer(f); for (const m of t.matchAll(/Bizum(.{0,3})/gi)) if (rel(f).startsWith('en/') ? t.slice(m.index - 16, m.index + 36) !== 'We don’t accept Bizum (a Spanish mobile payment app)' : !/^ no/.test(m[1])) biz.push(rel(f)); }
+ok('2. «Bizum» solo como «Bizum no» (en inglés, «We don’t accept Bizum (a Spanish mobile payment app)»)', !biz.length, biz.join(', '));
 // 3
 const prohibidas = /halloween|navidad|estufa|\btapas?\b|montadito|raciones/i, hall = [];
 for (const f of todos) {
@@ -207,20 +208,35 @@ ok('EN2. Cada página en inglés existe, con lang="en", canonical propio y hrefl
   const alt = `<link rel="alternate" hreflang="es" href="${url(es)}">\n<link rel="alternate" hreflang="en" href="${url(en)}">\n<link rel="alternate" hreflang="x-default" href="${url(es)}">`;
   return /<html lang="en">/.test(tEn) && tEn.includes(`<link rel="canonical" href="${url(en)}">`) && tEs.includes(alt) && tEn.includes(alt) && /<meta property="og:locale" content="en_GB">/.test(tEn);
 }));
-ok('EN3. Botón de idioma en la cabecera y enlace en el pie, cada uno a la misma página en el otro idioma', Object.entries(PARES).every(([es, en]) => {
-  const tEs = leer(pag(es)), tEn = leer(pag(en)), rEs = '/' + (es ? es + '/' : ''), rEn = '/' + en + '/';
-  return tEs.includes(`<a class="idioma" href="${rEn}" hreflang="en" lang="en">`) && tEs.includes(`<li class="pie__idioma"><a href="${rEn}" hreflang="en" lang="en">English</a></li>`)
-    && tEn.includes(`<a class="idioma" href="${rEs}" hreflang="es" lang="es">`) && tEn.includes(`<li class="pie__idioma"><a href="${rEs}" hreflang="es" lang="es">Español</a></li>`);
-}) && /<a class="idioma" href="\/en\/"/.test(leer(path.join(WEB, '404.html'))));
-ok('EN4. Menú en inglés: Home, Menu, Getting here, FAQ, Cookie settings, con la página actual marcada', Object.entries(PARES).every(([es, en]) => {
+// Cada página lleva una sola vez cada pieza del cambio de idioma, enlazando a la página equivalente
+const marcasIdioma = (t, actual, otra) => {
+  const otro = actual === 'es' ? 'en' : 'es';
+  const piezas = [
+    `<a class="idioma" href="${otra}" hreflang="${otro}" lang="${otro}">`,
+    '<div class="idiomas" role="group"',
+    `<a href="${otra}" hreflang="${otro}" lang="${otro}" aria-label="${otro === 'en' ? 'View this page in English' : 'Ver esta página en español'}">${otro.toUpperCase()}</a>`,
+    `<span class="idiomas__actual" aria-current="true" lang="${actual}"><span aria-hidden="true">${actual.toUpperCase()}</span>`,
+    '<p class="nav__idiomas" role="group"',
+    `<li class="pie__idioma"><a href="${otra}" hreflang="${otro}" lang="${otro}">`
+  ];
+  const fila = (t.match(/<p class="nav__idiomas"[^>]*>.*?<\/p>/) || [''])[0];
+  return piezas.every(s => t.split(s).length === 2) && (t.match(/aria-current="true"/g) || []).length === 2
+    && fila.includes(`<a href="${otra}" hreflang="${otro}" lang="${otro}">${otro === 'en' ? 'English' : 'Español'}</a>`)
+    && fila.includes(`<span class="idiomas__actual" aria-current="true" lang="${actual}">${actual === 'en' ? 'English' : 'Español'}</span>`);
+};
+ok('EN3. Las 14 páginas y la 404: botón de idioma de móvil, conmutador «ES · EN» de escritorio, fila del menú y enlace del pie, a la página equivalente y con el idioma actual marcado', Object.entries(PARES).every(([es, en]) => {
+  const rEs = '/' + (es ? es + '/' : ''), rEn = '/' + en + '/';
+  return marcasIdioma(leer(pag(es)), 'es', rEn) && marcasIdioma(leer(pag(en)), 'en', rEs);
+}) && marcasIdioma(leer(path.join(WEB, '404.html')), 'es', '/en/'));
+ok('EN4. Menú en inglés: Home, Menu, Getting here, Questions, Cookie settings, con la página actual marcada', Object.entries(PARES).every(([es, en]) => {
   const t = leer(pag(en)); const n = t.indexOf('<nav class="nav"'); const menu = t.slice(n, t.indexOf('</nav>', n));
   const orden = [...menu.matchAll(/<li[^>]*><a href="([^"]+)"[^>]*>([^<]*)<\/a><\/li>/g)];
-  const actual = { 'en': 'Home', 'en/menu': 'Menu', 'en/getting-here': 'Getting here', 'en/faq': 'FAQ' }[en];
-  return orden.map(m => m[2]).join('|') === 'Home|Menu|Getting here|FAQ|Cookie settings' && orden.map(m => m[1]).join('|') === '/en/|/en/menu/|/en/getting-here/|/en/faq/|/en/cookies/'
+  const actual = { 'en': 'Home', 'en/menu': 'Menu', 'en/getting-here': 'Getting here', 'en/faq': 'Questions' }[en];
+  return orden.map(m => m[2]).join('|') === 'Home|Menu|Getting here|Questions|Cookie settings' && orden.map(m => m[1]).join('|') === '/en/|/en/menu/|/en/getting-here/|/en/faq/|/en/cookies/'
     && (actual ? (menu.match(/aria-current="page"/g) || []).length === 1 && menu.includes(`aria-current="page">${actual}<`) : !/aria-current="page"/.test(menu));
 }));
 // Nombres propios y direcciones que se quedan en español
-const PROPIOS = /La Bodeguita de la Esquina|La Bodeguita|Grupo Hostelero Friser|Restaurante Taberna Asturiana|Mantenimiento Industrial Friser, S\.L\.|C\/ Benicarló, 25, bajos 5 y 6|bajos 5 y 6|C\/ Poeta Altet, 22, bajo|Registro Mercantil de Valencia|Calle Benicarló|C\/ Doctor Vicent Zaragoza|consentimiento-cookies|Agencia Española de Protección de Datos|Español|Chivito Bodeguita|Benicarló|València|Café/g;
+const PROPIOS = /La Bodeguita de la Esquina|La Bodeguita|Grupo Hostelero Friser|Restaurante Taberna Asturiana|Mantenimiento Industrial Friser, S\.L\.|C\/ Benicarló, 25, bajos 5 y 6|bajos 5 y 6|C\/ Poeta Altet, 22, bajo|Registro Mercantil de Valencia|Calle Benicarló|C\/ Doctor Vicent Zaragoza|consentimiento-cookies|Agencia Española de Protección de Datos|Ver esta página en español|Español|Café con leche|Bocadillos|Chivito Bodeguita|Benicarló|València|Café/g;
 const restos = [];
 for (const en of Object.values(PARES)) {
   const texto = visible(leer(pag(en))).replace(PROPIOS, ' ');
@@ -237,7 +253,20 @@ for (const en of Object.values(PARES)) for (const m of leer(pag(en)).matchAll(/\
 }
 ok('EN6. Enlaces internos de las páginas en inglés: existen y llevan a páginas en inglés (salvo el cambio de idioma)', !rotosEn.length, rotosEn.join(" · "));
 const precios = t => [...t.matchAll(/(\d+),(\d\d)(?:&nbsp;| )€|€(\d+)\.(\d\d)/g)].map(m => (m[1] || m[3]) + '.' + (m[2] || m[4])).join(' ');
-ok('EN7. Mismos precios, en el mismo orden, en la carta y la portada en inglés', ['', 'carta'].every(es => { const a = precios(leer(pag(es))), b = precios(leer(pag(PARES[es]))); return a && a === b; }));
+ok('EN7. Mismos precios, en el mismo orden, en las 7 parejas de páginas', Object.keys(PARES).every(es => { const a = precios(leer(pag(es))), b = precios(leer(pag(PARES[es]))); return a === b && (!['', 'carta', 'preguntas-frecuentes'].includes(es) || a); }));
+// Horas: el teléfono no cuenta (no lleva «:»)
+const conHora24 = Object.values(PARES).filter(en => /\b\d{1,2}:\d\d\b/.test(visible(leer(pag(en)))));
+ok('EN9. Horas en formato inglés en /en/: ninguna «24:00» ni «8:00» en el texto visible (el JSON-LD no cuenta)', !conHora24.length
+  && /8 am – midnight/.test(leer(pag('en/getting-here'))) && /12 noon – midnight/.test(leer(pag('en')))
+  && /8 am to midnight\. Friday and Saturday, 8 am to 2 am\. Sunday, 12 noon to midnight\./.test(leer(pag('en/faq'))), conHora24.join(', '));
+ok('EN10. Aviso «View this page in English» en las 7 páginas en español (bajo las migas o, en Inicio, bajo la cabecera) con idioma.js en el <head>; ninguno en inglés', Object.entries(PARES).every(([es, en]) => {
+  const t = leer(pag(es)), rEn = '/' + en + '/';
+  const aviso = t.indexOf('<div class="aviso-idioma'), ancla = t.indexOf(es ? '<nav class="migas' : '<main id="contenido"');
+  return ancla > 0 && aviso > ancla && !t.slice(ancla, aviso).slice(0, -1).includes('\n')
+    && t.includes(`<a href="${rEn}" hreflang="en">View this ${es === 'carta' ? 'menu' : 'page'} in English`) && t.includes('data-aviso-idioma-cerrar')
+    && /<script src="\/assets\/js\/idioma\.js\?v=[^"]+"><\/script>\n<link rel="stylesheet"/.test(t) && t.indexOf('idioma.js') < t.indexOf('</head>')
+    && !/aviso-idioma|idioma\.js/.test(leer(pag(en)));
+}));
 const mapaWeb = leer(path.join(WEB, 'sitemap.xml'));
 ok('EN8. El sitemap incluye las 14 páginas con sus alternativas de idioma', Object.entries(PARES).every(([es, en]) => mapaWeb.includes(`<loc>${url(es)}</loc>`) && mapaWeb.includes(`<loc>${url(en)}</loc>`)) && (mapaWeb.match(/<url>/g) || []).length === 14 && (mapaWeb.match(/hreflang="en"/g) || []).length === 14);
 console.log(errores ? `\n${errores} comprobaciones con fallos` : '\nTodas las comprobaciones automáticas correctas');

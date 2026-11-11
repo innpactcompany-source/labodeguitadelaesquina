@@ -15,6 +15,14 @@
     return (Math.floor(min / 60) % 24) + ':' + (m < 10 ? '0' : '') + m;
   }
 
+  // Formato inglés: 24:00 → midnight, 12:00 → 12 noon, el resto en 12 horas (8 am, 2 am)
+  function horaIngles(min) {
+    if (min % 1440 === 0) return 'midnight';
+    if (min === 720) return '12 noon';
+    var h = Math.floor(min / 60) % 24, m = min % 60;
+    return (h % 12 || 12) + (m ? ':' + (m < 10 ? '0' : '') + m : '') + (h < 12 ? ' am' : ' pm');
+  }
+
   function estadoEn(dia, min) {
     var ayer = (dia + 6) % 7;
     var t = TURNOS[ayer];
@@ -40,8 +48,8 @@
   // idioma: 'en' para la versión en inglés; cualquier otro valor, español
   function texto(e, idioma) {
     if (idioma === 'en') return e.abierto
-      ? 'Open now · closes at ' + hora(e.cierra)
-      : 'Closed · opens ' + (e.abreHoy ? 'today' : 'tomorrow') + ' at ' + hora(e.abre);
+      ? 'Open now · closes at ' + horaIngles(e.cierra)
+      : 'Closed · opens ' + (e.abreHoy ? 'today' : 'tomorrow') + ' at ' + horaIngles(e.abre);
     return e.abierto
       ? 'Abierto ahora · cierra a las ' + hora(e.cierra)
       : 'Cerrado · abre ' + (e.abreHoy ? 'hoy' : 'mañana') + ' a las ' + hora(e.abre);
@@ -76,5 +84,5 @@
     setInterval(pintar, 60000);
   }
 
-  return { TURNOS: TURNOS, hora: hora, estadoEn: estadoEn, estadoAhora: estadoAhora, texto: texto, iniciar: iniciar };
+  return { TURNOS: TURNOS, hora: hora, horaIngles: horaIngles, estadoEn: estadoEn, estadoAhora: estadoAhora, texto: texto, iniciar: iniciar };
 });

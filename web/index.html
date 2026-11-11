@@ -35,7 +35,8 @@
 <link rel="preload" as="image" type="image/webp" href="/assets/img/bodeguita-barra-movil-900.webp" imagesrcset="/assets/img/bodeguita-barra-movil-600.webp 600w, /assets/img/bodeguita-barra-movil-900.webp 900w" imagesizes="75vw" media="(max-width: 700px)" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="/assets/img/bodeguita-barra-1600.webp" imagesrcset="/assets/img/bodeguita-barra-800.webp 800w, /assets/img/bodeguita-barra-1600.webp 1600w" imagesizes="100vw" media="(min-width: 701px)" fetchpriority="high">
 <link rel="preload" href="/assets/fonts/libre-baskerville-latin-400-700.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/base.css?v=20261111a">
+<script src="/assets/js/idioma.js?v=20261111b"></script>
+<link rel="stylesheet" href="/assets/css/base.css?v=20261111b">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -139,7 +140,7 @@
 <a class="saltar" href="#contenido">Saltar al contenido</a>
 <header class="cabecera">
 <div class="cabecera__in">
-<a class="logo" href="/"><picture><source media="(prefers-color-scheme: dark)" srcset="/assets/marca/bodeguita-logo-horizontal-fondo-oscuro.svg"><img src="/assets/marca/bodeguita-logo-horizontal-fondo-claro.svg" width="296" height="44" alt="La Bodeguita de la Esquina, inicio"></picture></a><a class="idioma" href="/en/" hreflang="en" lang="en"><span aria-hidden="true">EN</span><span class="solo-lectores">English</span></a>
+<a class="logo" href="/"><picture><source media="(prefers-color-scheme: dark)" srcset="/assets/marca/bodeguita-logo-horizontal-fondo-oscuro.svg"><img src="/assets/marca/bodeguita-logo-horizontal-fondo-claro.svg" width="296" height="44" alt="La Bodeguita de la Esquina, inicio"></picture></a><a class="idioma" href="/en/" hreflang="en" lang="en"><span aria-hidden="true">EN</span><span class="solo-lectores">View this page in English</span></a>
 <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menú"><svg class="icono icono-menu" width="24" height="24" aria-hidden="true" focusable="false"><use href="/assets/iconos/iconos.svg#menu"></use></svg><svg class="icono icono-cerrar" width="24" height="24" aria-hidden="true" focusable="false"><use href="/assets/iconos/iconos.svg#cerrar"></use></svg></button>
 <nav class="nav" id="menu-principal" aria-label="Principal">
 <ul>
@@ -148,11 +149,14 @@
 <li class="nav__cookies"><a href="/cookies/" data-cookies-abrir>Configurar cookies</a></li>
 </ul>
 <div class="nav__movil"><a class="btn btn--primario" href="tel:+34682262587"><svg class="icono" width="24" height="24" aria-hidden="true" focusable="false"><use href="/assets/iconos/iconos.svg#telefono"></use></svg><span>Llamar</span></a><a class="btn btn--secundario" href="https://wa.me/34682262587?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20La%20Bodeguita" target="_blank" rel="noopener noreferrer"><svg class="icono" width="24" height="24" aria-hidden="true" focusable="false"><use href="/assets/iconos/iconos.svg#chat"></use></svg><span>WhatsApp</span><span class="solo-lectores"> (se abre en otra web)</span></a></div>
+<p class="nav__idiomas" role="group" aria-label="Idioma"><span class="idiomas__actual" aria-current="true" lang="es">Español</span><span class="idiomas__punto" aria-hidden="true">·</span><a href="/en/" hreflang="en" lang="en">English</a></p>
 </nav>
+<div class="idiomas" role="group" aria-label="Idioma"><span class="idiomas__actual" aria-current="true" lang="es"><span aria-hidden="true">ES</span><span class="solo-lectores">Español</span></span><span class="idiomas__punto" aria-hidden="true">·</span><a href="/en/" hreflang="en" lang="en" aria-label="View this page in English">EN</a></div>
 <a class="btn btn--primario cabecera__llamar" href="tel:+34682262587"><svg class="icono" width="24" height="24" aria-hidden="true" focusable="false"><use href="/assets/iconos/iconos.svg#telefono"></use></svg><span>Llamar</span></a>
 </div>
 </header>
 <main id="contenido" tabindex="-1">
+<div class="aviso-idioma contenedor" lang="en"><p><a href="/en/" hreflang="en">View this page in English <span aria-hidden="true">→</span></a></p><button class="aviso-idioma__cerrar" type="button" aria-label="Close" data-aviso-idioma-cerrar><svg class="icono" width="24" height="24" aria-hidden="true" focusable="false"><use href="/assets/iconos/iconos.svg#cerrar"></use></svg></button></div>
 <section class="portada" aria-labelledby="titulo-portada">
 <picture class="portada__foto"><source media="(max-width: 700px)" type="image/webp" srcset="/assets/img/bodeguita-barra-movil-600.webp 600w, /assets/img/bodeguita-barra-movil-900.webp 900w" sizes="75vw"><source media="(max-width: 700px)" type="image/jpeg" srcset="/assets/img/bodeguita-barra-movil-1159.jpg"><source type="image/webp" srcset="/assets/img/bodeguita-barra-800.webp 800w, /assets/img/bodeguita-barra-1600.webp 1600w" sizes="100vw"><img src="/assets/img/bodeguita-barra-2400.jpg" width="2400" height="1350" alt="Barra de La Bodeguita de la Esquina con botellas de vino, cafetera y frente de ladrillo" fetchpriority="high" decoding="async"></picture>
 <div class="portada__in">
@@ -294,8 +298,8 @@
 <p><a href="/cookies/">Política de cookies</a></p>
 </div>
 </div>
-<script src="/assets/js/main.js?v=20261111a" defer></script>
-<script src="/assets/js/cookies.js?v=20261111a" defer></script>
-<script src="/assets/js/horario.js?v=20261111a" defer></script>
+<script src="/assets/js/main.js?v=20261111b" defer></script>
+<script src="/assets/js/cookies.js?v=20261111b" defer></script>
+<script src="/assets/js/horario.js?v=20261111b" defer></script>
 </body>
 </html>

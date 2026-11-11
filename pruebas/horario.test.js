@@ -88,6 +88,20 @@ caso('domingo 29 mar, 1:30 (CET, aún turno del sábado)', new Date('2026-03-29T
 caso('domingo 29 mar, 2:30 no existe: 01:30 UTC es 3:30 CEST', new Date('2026-03-29T01:30:00Z'), ABRE12);
 caso('verano: sábado 4 jul, 01:30 CEST', enMadrid('2026-07-04', '01:30'), 'Abierto ahora · cierra a las 2:00');
 caso('verano: lunes 6 jul, 07:59 CEST', enMadrid('2026-07-06', '07:59'), ABRE8);
+// Textos en inglés: horas en formato inglés (midnight, 12 noon, 8 am, 2 am)
+function ingles(nombre, dia, hh, mm, esperado) {
+  total++;
+  const r = H.texto(H.estadoEn(dia, hh * 60 + mm), 'en');
+  if (r !== esperado) { fallos++; console.log('FALLO inglés', nombre, JSON.stringify(r), '≠', JSON.stringify(esperado)); }
+}
+ingles('lunes 10:00', 1, 10, 0, 'Open now · closes at midnight');
+ingles('viernes 23:00', 5, 23, 0, 'Open now · closes at 2 am');
+ingles('sábado 1:30', 6, 1, 30, 'Open now · closes at 2 am');
+ingles('lunes 7:00', 1, 7, 0, 'Closed · opens today at 8 am');
+ingles('domingo 10:00', 0, 10, 0, 'Closed · opens today at 12 noon');
+ingles('sábado 3:00', 6, 3, 0, 'Closed · opens today at 8 am');
+ingles('lunes 0:30', 1, 0, 30, 'Closed · opens today at 8 am');
+total++; if (['0', '480', '720', '1110', '1440', '1560'].map(m => H.horaIngles(+m)).join('|') !== 'midnight|8 am|12 noon|6:30 pm|midnight|2 am') { fallos++; console.log('FALLO horaIngles'); }
 console.log(informe.join(String.fromCharCode(10)));
 console.log('Zona horaria del proceso: ' + (process.env.TZ || Intl.DateTimeFormat().resolvedOptions().timeZone));
 console.log(`${total - fallos}/${total} pruebas correctas`);

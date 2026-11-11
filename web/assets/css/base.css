@@ -113,7 +113,7 @@ main { display: block; }
 .nav li a:hover, .nav li a[aria-current="page"] { border-bottom-color: var(--color-oro); }
 .cabecera .cabecera__llamar { display: none; }
 .menu-btn { display: none; margin-left: auto; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border: 2px solid var(--color-oro); border-radius: var(--radio); background: transparent; color: var(--color-texto); cursor: pointer; }
-/* Cambio de idioma: «EN» en las páginas en español y «ES» en las páginas en inglés */
+/* Cambio de idioma en móvil: botón «EN» en las páginas en español y «ES» en las páginas en inglés, junto al menú */
 .idioma { margin-left: auto; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; padding: 0 .5rem; border: 2px solid var(--color-oro); border-radius: var(--radio); color: var(--color-texto); font: 700 .85rem/1 var(--fuente-titulos); letter-spacing: .08em; text-decoration: none; transition: border-color .2s; }
 .idioma:hover { border-color: var(--color-texto); }
 .idioma + .menu-btn { margin-left: -.5rem; }
@@ -130,6 +130,13 @@ main { display: block; }
 .menu-btn[aria-expanded="true"] .icono-menu { display: none; }
 .menu-btn[aria-expanded="true"] .icono-cerrar { display: block; }
 .nav__movil { display: none; }
+/* Fila «Español · English» al final del menú desplegado y conmutador «ES · EN» de escritorio: el idioma actual no es enlace */
+.idiomas, .nav__idiomas { display: none; }
+.idiomas a, .nav__idiomas a, .idiomas__actual { display: inline-flex; align-items: center; min-height: 44px; padding: 0 .25rem; color: var(--color-texto); text-decoration: none; border-bottom: 3px solid transparent; transition: border-color .2s; }
+.idiomas a:hover, .nav__idiomas a:hover { border-bottom-color: var(--color-oro); }
+.idiomas__actual { color: var(--color-rojo-texto); border-bottom-color: var(--color-oro); }
+.idiomas__punto { padding: 0 .35rem; color: var(--color-texto-suave); }
+.js .nav .nav__idiomas { display: flex; align-items: center; justify-content: center; margin: .75rem 0 0; font: 600 .95rem/1 var(--fuente-titulos); letter-spacing: .06em; text-transform: uppercase; }
 .js .menu-btn { display: inline-flex; }
 .js .nav { position: absolute; left: 0; right: 0; top: 100%; background: var(--color-cabecera); border-bottom: 2px solid var(--color-oro); padding: .5rem 1rem 1rem; }
 .js .nav.abierto { display: block; }
@@ -149,16 +156,22 @@ main { display: block; }
   .logo img { height: 44px; }
   .cabecera .cabecera__llamar { display: inline-flex; }
   .js .menu-btn { display: none; }
-  .idioma { order: 2; margin-left: 0; }
-  .cabecera .cabecera__llamar { order: 3; }
   .nav, .js .nav { display: block; position: static; margin-left: auto; padding: 0; border: 0; background: none; }
   .nav ul, .js .nav ul { flex-direction: row; gap: .25rem 1.25rem; }
   .js .nav li { border: 0; }
   .js .nav li a { display: inline-flex; min-height: 44px; font-size: .9rem; border-bottom: 3px solid transparent; }
   .js .nav li a:hover, .js .nav li a[aria-current="page"] { border-bottom-color: var(--color-oro); }
-  .js .nav .nav__movil { display: none; }
+  .js .nav .nav__movil, .js .nav .nav__idiomas { display: none; }
   .nav ul, .js .nav ul { flex-wrap: nowrap; }
 }
+/* Desde 1120 px el botón de idioma se cambia por el conmutador de texto «ES · EN», entre el menú y el botón de llamar.
+   Por debajo (832 a 1119 px, con el menú en línea) no cabe sin apretar el menú y se queda el botón de móvil. */
+@media (min-width: 70rem) {
+  .idioma { display: none; }
+  .idiomas { display: flex; align-items: center; font: 600 .9rem/1 var(--fuente-titulos); letter-spacing: .06em; text-transform: uppercase; }
+  .idiomas::before { content: ""; width: 1px; height: 1.4rem; margin-right: .9rem; background: var(--color-oro); }
+}
+@media (min-width: 52rem) and (max-width: 69.99rem) { .idioma { order: 2; margin-left: 0; } .cabecera .cabecera__llamar { order: 3; } }
 /* Entre 832 y 1023 px la navegación en línea se ajusta para quedar siempre en una sola línea */
 @media (min-width: 52rem) and (max-width: 63.99rem) {
   .cabecera__in { gap: .75rem; }
@@ -209,6 +222,13 @@ main { display: block; }
 
 /* ---------- Migas ---------- */
 .migas { padding-block: .9rem .2rem; font-size: .9rem; }
+/* Aviso «View this page in English»: solo existe en las páginas en español y lo enseña assets/js/idioma.js antes de pintar */
+.aviso-idioma { display: none; }
+.aviso-ingles .aviso-idioma { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-block: .75rem; padding: 0 0 0 1rem; background: var(--color-hoy); border: 1px solid var(--color-borde); border-left: 4px solid var(--color-oro); border-radius: var(--radio); }
+.aviso-idioma p { margin: 0; }
+.aviso-idioma a { display: inline-block; padding-block: .55rem; font-weight: 700; color: var(--color-texto); text-underline-offset: .2em; }
+.aviso-idioma__cerrar { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: var(--radio); background: transparent; color: var(--color-texto); cursor: pointer; }
+.aviso-idioma__cerrar:hover { background: var(--color-borde); }
 .migas ol { list-style: none; display: flex; flex-wrap: wrap; gap: .25rem .5rem; }
 .migas li + li::before { content: "›"; margin-right: .5rem; color: var(--color-texto-suave); }
 .migas a { color: var(--color-texto-suave); }
@@ -217,6 +237,7 @@ main { display: block; }
 /* ---------- Plato y marco de carta ---------- */
 .marco { border: 5px double var(--color-oro-texto); background: var(--color-superficie); padding: 1rem 1.1rem 1.1rem; border-radius: 2px; }
 .marco__titulo { text-align: center; margin: 0 0 .4rem; font-size: clamp(1.25rem, 3.5vw, 1.6rem); letter-spacing: .06em; }
+.marco__subtitulo { margin: -.3rem 0 .6rem; text-align: center; font: italic 400 .95rem/1.4 var(--fuente-acento); color: var(--color-texto-suave); }
 .platos { list-style: none; }
 .plato { padding: .55rem 0; }
 .plato + .plato { border-top: 1px solid var(--color-borde); }
