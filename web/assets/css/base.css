@@ -461,7 +461,21 @@ a.grupo__enlace:hover { border-color: var(--g-acento); }
 .grupo__local--aqui .grupo__enlace { border-color: var(--g-acento); }
 @media (min-width: 52rem) {
   .grupo { grid-template-columns: 140px 1fr; column-gap: 2rem; align-items: start; }
-  .grupo__locales { grid-template-columns: 1fr 1fr; }
+  /* Escritorio: rejilla 2 × 2 de tarjetas iguales (icono · nombre y dirección debajo · enlace o «Estás aquí»).
+     .pie .grupo__enlace gana a .pie li a, que las ponía en inline-flex con nombre y dirección en la misma línea */
+  .grupo__locales { grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; }
+  .pie .grupo__enlace { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; column-gap: .8rem; align-items: center; align-content: center; width: 100%; height: 100%; min-height: 4rem; padding: .55rem .85rem; color: var(--g-texto); }
+  .grupo__nombre, .grupo__dir { min-width: 0; line-height: 1.3; }
+  .grupo__dir { font-size: 1rem; color: #CDBFA5; opacity: 1; }
+  .grupo__aqui, .grupo__externo { justify-self: end; }
+  .grupo__aqui { white-space: nowrap; }
+}
+/* Entre 832 y 1119 px la columna de tarjetas es estrecha: texto algo menor para que los nombres quepan */
+@media (min-width: 52rem) and (max-width: 69.99rem) {
+  .pie .grupo__enlace { column-gap: .65rem; padding-inline: .7rem; }
+  .grupo__nombre { font-size: 1rem; }
+  .grupo__dir { font-size: .9375rem; }
+  .grupo__aqui { padding-inline: .45rem; letter-spacing: .02em; }
 }
 @media (max-width: 51.99rem) {
   /* Tarjetas de los locales: las cuatro iguales (icono · nombre y dirección · enlace o «Estás aquí») */

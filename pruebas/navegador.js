@@ -139,6 +139,24 @@ async function estadoBarra(t, visible) {
       ok('G3. La página declara color-scheme claro y oscuro (así el modo oscuro forzado de Chrome no oscurece el logo del grupo)', /dark/.test(await t.ev(`getComputedStyle(document.documentElement).colorScheme`)));
       await t.cerrar();
     }
+    // ---------- Pie: tarjetas de los locales del grupo en escritorio (rejilla 2 × 2) ----------
+    {
+      const malas = [];
+      for (const ruta of ['/', '/en/']) for (const ancho of [832, 900, 1024, 1120, 1440]) {
+        const t = await abrir(c, base, ruta, { ancho, alto: 900 });
+        const m = await t.ev(`(() => { const r = (e, s) => e.querySelector(s).getBoundingClientRect();
+          const cs = [...document.querySelectorAll('.grupo__enlace')].map(e => { const caja = e.getBoundingClientRect(); return { caja, izq: r(e, '.grupo__icono').left - caja.left, der: caja.right - r(e, '.grupo__aqui, .grupo__externo').right,
+            nombre: r(e, '.grupo__nombre'), dir: r(e, '.grupo__dir') }; });
+          const igual = (f, l = cs) => Math.max(...l.map(f)) - Math.min(...l.map(f)) < 0.6;
+          const [a, b, c2, d] = cs;
+          return { n: cs.length, ancho: igual(x => x.caja.width), alto: igual(x => x.caja.height),
+            rejilla: Math.abs(a.caja.top - b.caja.top) < 0.6 && Math.abs(c2.caja.top - d.caja.top) < 0.6 && Math.abs(a.caja.left - c2.caja.left) < 0.6 && Math.abs(b.caja.left - d.caja.left) < 0.6 && b.caja.left > a.caja.right && c2.caja.top > a.caja.bottom,
+            izq: igual(x => x.izq), der: igual(x => x.der), dirDebajo: cs.every(x => x.dir.top >= x.nombre.bottom - 0.6 && Math.abs(x.dir.left - x.nombre.left) < 0.6) }; })()`);
+        if (m.n !== 4 || !m.ancho || !m.alto || !m.rejilla || !m.izq || !m.der || !m.dirDebajo) malas.push(`${ruta} ${ancho}px ${JSON.stringify(m)}`);
+        await t.cerrar();
+      }
+      ok('G4. Pie en escritorio (832 a 1440 px): rejilla de 2 × 2 con las cuatro tarjetas del mismo ancho y alto, la dirección debajo del nombre y los iconos izquierdos y derechos alineados', !malas.length, malas.slice(0, 3).join(' | '));
+    }
 
     // ---------- Consola, CSP y terceros ----------
     const paginas = ['/', '/carta/', '/como-llegar/', '/preguntas-frecuentes/', '/aviso-legal/', '/privacidad/', '/cookies/',

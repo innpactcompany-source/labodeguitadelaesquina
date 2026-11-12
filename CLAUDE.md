@@ -65,8 +65,11 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
   (`grid-auto-rows: 1fr`), con el icono del local en una columna de 24 px, nombre en negrita y dirección en `#CDBFA5`, y a la
   derecha el icono de enlace o la píldora «Estás aquí». `.pie .grupo__enlace` debe ganar a `.pie li a` (que es `inline-flex`).
   Desde 360 px nombre y dirección caben en una línea (el texto baja por tramos hasta 14 px; la píldora no baja de 13 px); a
-  320 px «La Bodeguita de la Esquina» ocupa dos líneas y las cuatro tarjetas crecen a la vez. El escritorio no se tocó (allí
-  las tarjetas siguen con nombre y dirección en la misma fila).
+  320 px «La Bodeguita de la Esquina» ocupa dos líneas y las cuatro tarjetas crecen a la vez.
+- Pie en escritorio (desde 832 px): rejilla de 2 × 2 con las cuatro tarjetas iguales en ancho y alto (`grid-auto-rows: 1fr`),
+  icono en columna de 28 px, nombre en negrita, dirección debajo en `#CDBFA5` y a la derecha el enlace o «Estás aquí», como
+  en el Excalibur. Entre 832 y 1119 px el texto baja a 16 px y, hasta unos 960 px, los nombres largos ocupan dos líneas
+  (las cuatro tarjetas crecen a la vez). Cabecera, columnas del pie y logo y frase del grupo no cambiaron (12-11-2026).
 - Home en móvil (< 700 px): «Lo que encontrarás» es un carrusel horizontal con `scroll-snap`, tarjetas del 82 % y `tabindex="0"` en el contenedor, que `main.js` quita por encima de 700 px.
 - Imagen para redes: `assets/marca/og-image.jpg` mide 1200 x 630, pesa unos 84 KB y está hecha con la cartela, Cinzel y Source Sans 3 (JPEG 4:4:4); `og:image:width/height` deben seguir siendo 1200 y 630.
   La inglesa, `og-image-en.jpg` (55 KB), es la misma con la línea «BREAKFAST · BRUNCH · TERRACE» (Cinzel 600, 35 px,
@@ -178,7 +181,7 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
 
 ## Después de cualquier cambio
 
-- Sube el `?v=` del CSS y el JS (está en todos los HTML; hay que cambiarlo en todos a la vez). Si el cambio es el mismo día, añade una letra o un punto al final (`20261112b`): el `.htaccess` da caché de un año e `immutable` a todo recurso con `?v=`, así que sin cambiar el valor el navegador no verá el cambio.
+- Sube el `?v=` del CSS y el JS (está en todos los HTML; hay que cambiarlo en todos a la vez). Si el cambio es el mismo día, añade una letra o un punto al final (`20261112c`): el `.htaccess` da caché de un año e `immutable` a todo recurso con `?v=`, así que sin cambiar el valor el navegador no verá el cambio.
 - Actualiza `lastmod` en `sitemap.xml` y la fecha de «Última actualización» si se tocan los legales.
 - Repite la verificación.
 
@@ -188,7 +191,7 @@ Comprueba cada punto con tus herramientas de búsqueda o con un script, y corrig
 Los scripts de `pruebas/` hacen casi todo: `node pruebas/verificar.js` (puntos 1 a 8, 10, 12 y 13),
 `node pruebas/horario.test.js` (punto 9; incluye los cambios de hora y cualquier zona del equipo) y `node pruebas/contraste.js` (punto 11).
 `node pruebas/navegador.js` abre la web en Chrome sin ventana (sin dependencias; necesita Chrome instalado o la variable
-`CHROME`) y comprueba lo que solo se ve ejecutando la página: la barra inferior (B1 a B4), las tarjetas del grupo en el pie del móvil (G1 a G3: mismo ancho y alto, iconos alineados, una línea desde 360 px y `color-scheme` declarado), la consola sin avisos de CSP,
+`CHROME`) y comprueba lo que solo se ve ejecutando la página: la barra inferior (B1 a B4), las tarjetas del grupo en el pie del móvil (G1 a G3 en móvil: mismo ancho y alto, iconos alineados, una línea desde 360 px y `color-scheme` declarado; G4 en escritorio, de 832 a 1440 px: rejilla de 2 × 2 con tarjetas iguales y alineadas), la consola sin avisos de CSP,
 ninguna petición a terceros sin permiso y el mapa (N1 a N4) y, solo contra el dominio, que `/ir/taberna-asturiana` y `/ir/en/taberna-asturiana` llegan a https://tabernaasturiana.com/ y a /en/ (I1). Con una URL (`node pruebas/navegador.js https://labodeguitadelaesquina.com`)
 se ejecuta contra el dominio.
 
