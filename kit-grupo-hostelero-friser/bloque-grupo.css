@@ -17,6 +17,34 @@ a.grupo__enlace:hover { border-color: var(--g-acento); }
   .grupo { grid-template-columns: 140px 1fr; column-gap: 2rem; align-items: start; }
   .grupo__locales { grid-template-columns: 1fr 1fr; }
 }
+/* Móvil: logo a la izquierda del texto y las cuatro tarjetas iguales (icono · nombre y dirección · enlace o «Estás aquí»).
+   «.grupo .grupo__enlace» gana a reglas generales de enlaces del pie (por ejemplo «.pie li a { display: inline-flex }»). */
+@media (max-width: 51.99rem) {
+  .grupo { grid-template-columns: 96px minmax(0, 1fr); align-items: center; gap: 1rem; }
+  .grupo > div { display: contents; }
+  .grupo__logo { width: 96px; }
+  .grupo__texto { margin: 0; font-size: .95rem; line-height: 1.4; }
+  .grupo__locales { grid-column: 1 / -1; gap: .4rem; grid-auto-rows: 1fr; }
+  .grupo .grupo__enlace { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; column-gap: .7rem; align-items: center; align-content: center; width: 100%; height: 100%; min-height: 3.25rem; padding: .45rem .75rem; color: var(--g-texto); }
+  .grupo__icono { width: 22px; height: 24px; }
+  .grupo__nombre, .grupo__dir { min-width: 0; line-height: 1.3; }
+  .grupo__nombre { font-size: 1rem; }
+  .grupo__dir { font-size: .9rem; opacity: .85; }
+  .grupo__aqui, .grupo__externo { justify-self: end; }
+  .grupo__aqui { padding: .1rem .5rem; font-size: .8125rem; letter-spacing: .04em; white-space: nowrap; }
+}
+@media (max-width: 25.99rem) {
+  .grupo .grupo__enlace { column-gap: .6rem; padding-inline: .65rem; }
+  .grupo__nombre { font-size: .9375rem; }
+  .grupo__dir { font-size: .875rem; }
+  .grupo__aqui { padding-inline: .45rem; letter-spacing: .02em; }
+}
+@media (max-width: 23.75rem) {
+  .grupo .grupo__enlace { column-gap: .5rem; padding-inline: .55rem; }
+  .grupo__nombre { font-size: .875rem; }
+  .grupo__dir { font-size: .8125rem; }
+  .grupo__aqui { padding-inline: .4rem; letter-spacing: 0; }
+}
 
 /* Variantes autocontenidas: el bloque lleva su propio fondo. */
 .grupo--oscuro, .grupo--claro { margin-top: 0; padding: 1.5rem; border: 1px solid var(--g-borde); border-radius: 8px; font: 400 16px/1.5 "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif; }

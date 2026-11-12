@@ -33,10 +33,12 @@ async function chrome(puerto, lang) {
   return {
     async pestana() {
       const t = await (await traer(`http://127.0.0.1:${puerto}/json/new?about:blank`, { method: 'PUT' })).json();
-      const ws = new WebSocket(t.webSocketDebuggerUrl); await new Promise(r => ws.onopen = r);
+      const ws = new WebSocket(t.webSocketDebuggerUrl);
+      await new Promise((r, x) => { ws.onopen = r; setTimeout(() => x(new Error("Chrome no abre la pestaña")), 15000); });
       let id = 0; const pend = {}; const eventos = [];
       ws.onmessage = m => { const d = JSON.parse(m.data); if (d.id && pend[d.id]) { pend[d.id](d.result || {}); delete pend[d.id]; } else if (d.method) eventos.push(d); };
-      const cmd = (method, params = {}) => new Promise(res => { const i = ++id; pend[i] = res; ws.send(JSON.stringify({ id: i, method, params })); });
+      // Cada orden tiene 20 s como máximo: si Chrome se queda colgado, la prueba falla en vez de quedarse esperando
+      const cmd = (method, params = {}) => new Promise((res, x) => { const i = ++id; pend[i] = res; ws.send(JSON.stringify({ id: i, method, params })); setTimeout(() => pend[i] && x(new Error(method + " no responde")), 20000); });
       const ev = async e => ((await cmd('Runtime.evaluate', { expression: e, awaitPromise: true, returnByValue: true })).result || {}).value;
       for (const d of ['Page', 'Runtime', 'Log', 'Network']) await cmd(d + '.enable');
       return { cmd, ev, eventos, cerrar: async () => { ws.close(); await traer(`http://127.0.0.1:${puerto}/json/close/${t.id}`).catch(() => {}); } };
@@ -47,6 +49,7 @@ async function chrome(puerto, lang) {
 
 async function abrir(c, base, ruta, { ancho = 375, alto = 812, movimiento = 'no-preference' } = {}) {
   const t = await c.pestana();
+  await t.cmd('Page.bringToFront'); // en segundo plano Chrome retrasa IntersectionObserver y las transiciones
   await t.cmd('Emulation.setDeviceMetricsOverride', { width: ancho, height: alto, deviceScaleFactor: 1, mobile: ancho < 768 });
   await t.cmd('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: movimiento }] });
   await t.cmd('Page.navigate', { url: base + ruta });
@@ -61,6 +64,12 @@ const ESTADO_BARRA = `(() => { const b = document.querySelector('.barra-movil');
   return { display: s.display, visible: s.visibility === 'visible' && s.display !== 'none' && +s.opacity > 0.99, transform: s.transform, transicion: s.transitionProperty }; })()`;
 // Desplazamiento instantáneo (la web usa scroll suave) y espera a que termine la transición de 0,25 s
 const scroll = y => `new Promise(r => { window.scrollTo({ top: ${y}, behavior: "instant" }); setTimeout(r, 600); })`;
+// Espera (hasta 3 s) a que la barra llegue al estado esperado; devuelve el último estado leído
+async function estadoBarra(t, visible) {
+  let e;
+  for (let i = 0; i < 30; i++) { e = await t.ev(ESTADO_BARRA); if (e.visible === visible && (!visible || e.transform === "none")) break; await espera(100); }
+  return e;
+}
 
 (async () => {
   if (!CHROME) { console.log('FALLA No encuentro Google Chrome (define CHROME con su ruta)'); process.exit(1); }
@@ -76,16 +85,16 @@ const scroll = y => `new Promise(r => { window.scrollTo({ top: ${y}, behavior: "
       const enfocable = await t.ev(`(() => { const a = document.querySelector('.barra-movil a'); a.focus(); return document.activeElement === a; })()`);
       const finPortada = await t.ev(`Math.ceil(document.querySelector('.portada .btn-grupo').getBoundingClientRect().bottom + scrollY)`);
       await t.ev(scroll('document.querySelector(".portada .btn-grupo").getBoundingClientRect().bottom + scrollY + 10'));
-      const abajo = await t.ev(ESTADO_BARRA);
+      const abajo = await estadoBarra(t, true);
       const botonesFuera = await t.ev(`document.querySelector('.portada .btn-grupo').getBoundingClientRect().bottom <= 0`);
       await t.ev(scroll(0));
-      const otraVez = await t.ev(ESTADO_BARRA);
+      const otraVez = await estadoBarra(t, false);
       // Antes de que los botones salgan del todo, la barra sigue oculta
       await t.ev(scroll(`${finPortada} - 40`));
-      const casi = await t.ev(ESTADO_BARRA);
+      const casi = await estadoBarra(t, false);
       ok(`B1. Inicio ${ruta} a 375 px: barra oculta y sin foco mientras se ven los botones de la portada, visible al dejarlos atrás y oculta otra vez al volver`,
         !arriba.visible && !enfocable && botonesFuera && abajo.visible && abajo.transform === 'none' && !otraVez.visible && !casi.visible && /transform/.test(arriba.transicion),
-        `arriba ${arriba.visible ? "visible" : "oculta"} · abajo ${abajo.visible ? "visible" : "oculta"} · al volver ${otraVez.visible ? "visible" : "oculta"}`);
+        `arriba ${arriba.visible ? "visible" : "oculta"}${enfocable ? " (enfocable)" : ""} · abajo ${abajo.visible ? "visible" : "oculta"} (${abajo.transform}${botonesFuera ? "" : ", botones aún visibles"}) · al volver ${otraVez.visible ? "visible" : "oculta"} · casi al final ${casi.visible ? "visible" : "oculta"}`);
       await t.cerrar();
     }
     {
@@ -105,6 +114,29 @@ const scroll = y => `new Promise(r => { window.scrollTo({ top: ${y}, behavior: "
       ok('B3. En el resto de páginas la barra se ve desde el principio, como siempre', !malas.length, malas.join(', '));
       const t = await abrir(c, base, '/', { ancho: 1440, alto: 900 });
       ok('B4. En escritorio no hay barra inferior', (await t.ev(ESTADO_BARRA)).display === 'none');
+      await t.cerrar();
+    }
+
+    // ---------- Pie: tarjetas de los locales del grupo en móvil ----------
+    {
+      const malas = [], dosLineas = [];
+      for (const ruta of ['/', '/en/', '/carta/']) for (const ancho of [320, 360, 375, 390, 414]) {
+        const t = await abrir(c, base, ruta, { ancho });
+        const m = await t.ev(`(() => { const lista = document.querySelector('.grupo__locales').getBoundingClientRect();
+          const r = (e, s) => e.querySelector(s).getBoundingClientRect();
+          const cs = [...document.querySelectorAll('.grupo__enlace')].map(e => ({ caja: e.getBoundingClientRect(), izq: r(e, '.grupo__icono').left, der: r(e, '.grupo__aqui, .grupo__externo').right,
+            lineas: [...e.querySelectorAll('.grupo__nombre, .grupo__dir')].map(x => Math.round(x.getBoundingClientRect().height / parseFloat(getComputedStyle(x).lineHeight))) }));
+          const igual = f => Math.max(...cs.map(f)) - Math.min(...cs.map(f)) < 0.6;
+          return { n: cs.length, ancho: cs.every(x => Math.abs(x.caja.width - lista.width) < 0.6), alto: igual(x => x.caja.height), sep: (s => Math.max(...s) - Math.min(...s) < 0.6)(cs.slice(1).map((x, i) => x.caja.top - cs[i].caja.bottom)),
+            izq: igual(x => x.izq), der: igual(x => x.der), unaLinea: cs.every(x => x.lineas.every(l => l === 1)) }; })()`);
+        if (m.n !== 4 || !m.ancho || !m.alto || !m.sep || !m.izq || !m.der) malas.push(`${ruta} ${ancho}px ${JSON.stringify(m)}`);
+        if (ancho >= 360 && !m.unaLinea) dosLineas.push(`${ruta} ${ancho}px`);
+        await t.cerrar();
+      }
+      ok('G1. Pie en móvil (320 a 414 px): las cuatro tarjetas del grupo miden lo mismo de ancho (el de la lista) y de alto, con la misma separación, y sus iconos izquierdos y derechos quedan alineados en columna', !malas.length, malas.slice(0, 3).join(' | '));
+      ok('G2. Desde 360 px el nombre y la dirección de cada local caben en una línea', !dosLineas.length, dosLineas.join(', '));
+      const t = await abrir(c, base, '/');
+      ok('G3. La página declara color-scheme claro y oscuro (así el modo oscuro forzado de Chrome no oscurece el logo del grupo)', /dark/.test(await t.ev(`getComputedStyle(document.documentElement).colorScheme`)));
       await t.cerrar();
     }
 
