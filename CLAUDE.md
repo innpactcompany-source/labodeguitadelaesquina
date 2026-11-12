@@ -163,6 +163,10 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
   visible «Si no se abre, pulsa aquí» / «If it doesn’t open, tap here» (en `/ir/en/…`, el inglés primero). GitHub añade
   antes la barra final (`/mesa` → 301 → `/mesa/`).
 
+## Pendiente
+
+- Hay dos ejecuciones de GitHub atascadas en cola (43097189241 y 43096566470) que no se pueden cancelar. Antes de cada publicación, comprobar si siguen ahí; si /ir/taberna-asturiana vuelve a llevar a Google Maps, relanzar el flujo de Pages. Si siguen el 14/11, escribir al soporte de GitHub con esos dos números.
+
 ## Después de cualquier cambio
 
 - Sube el `?v=` del CSS y el JS (está en todos los HTML; hay que cambiarlo en todos a la vez). Si el cambio es el mismo día, añade una letra o un punto al final (`20261112a`): el `.htaccess` da caché de un año e `immutable` a todo recurso con `?v=`, así que sin cambiar el valor el navegador no verá el cambio.
@@ -176,7 +180,7 @@ Los scripts de `pruebas/` hacen casi todo: `node pruebas/verificar.js` (puntos 1
 `node pruebas/horario.test.js` (punto 9; incluye los cambios de hora y cualquier zona del equipo) y `node pruebas/contraste.js` (punto 11).
 `node pruebas/navegador.js` abre la web en Chrome sin ventana (sin dependencias; necesita Chrome instalado o la variable
 `CHROME`) y comprueba lo que solo se ve ejecutando la página: la barra inferior (B1 a B4), la consola sin avisos de CSP,
-ninguna petición a terceros sin permiso y el mapa (N1 a N4). Con una URL (`node pruebas/navegador.js https://labodeguitadelaesquina.com`)
+ninguna petición a terceros sin permiso y el mapa (N1 a N4) y, solo contra el dominio, que `/ir/taberna-asturiana` y `/ir/en/taberna-asturiana` llegan a https://tabernaasturiana.com/ y a /en/ (I1). Con una URL (`node pruebas/navegador.js https://labodeguitadelaesquina.com`)
 se ejecuta contra el dominio.
 
 1. No hay `name="author"` ni `name="generator"`, ni textos tipo «diseñado por», «desarrollado por»,

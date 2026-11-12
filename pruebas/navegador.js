@@ -139,6 +139,29 @@ const scroll = y => `new Promise(r => { window.scrollTo({ top: ${y}, behavior: "
       ok('N4. Al pulsar «Cargar mapa» solo se habla con Google y la CSP no bloquea nada; al retirar el permiso el mapa desaparece', conMapa && sinMapa && !csp.length && hosts.every(h => /(^|\.)google\.com$/.test(h)), hosts.join(', '));
       await t.cerrar();
     }
+
+    // ---------- Locales del grupo (solo contra el dominio: en local no hay redirecciones) ----------
+    if (!servidor) {
+      const destinos = [['/ir/taberna-asturiana', 'https://tabernaasturiana.com/'], ['/ir/en/taberna-asturiana', 'https://tabernaasturiana.com/en/']];
+      const llegadas = [], malos = [];
+      for (const [ruta, destino] of destinos) {
+        const t = await c.pestana();
+        await t.cmd('Page.navigate', { url: base + ruta });
+        let url = '';
+        for (let i = 0; i < 100; i++) { // sigue la página de redirección (meta refresh) hasta 15 s
+          url = (await t.ev('location.href')) || url;
+          if (url.split(/[?#]/)[0] === destino) break;
+          await espera(150);
+        }
+        const final = url.split(/[?#]/)[0];
+        llegadas.push(`${ruta} → ${final || 'sin respuesta'}`);
+        if (final !== destino || /google\./.test(url)) malos.push(`${ruta} → ${url || 'sin respuesta'} (esperado ${destino})`);
+        await t.cerrar();
+      }
+      ok('I1. /ir/taberna-asturiana lleva a https://tabernaasturiana.com/ y /ir/en/taberna-asturiana a /en/, no a Google Maps', !malos.length, (malos.length ? malos : llegadas).join(' · '));
+    } else {
+      console.log('—     I1. /ir/taberna-asturiana solo se comprueba contra el dominio (en local no hay redirecciones)');
+    }
   } catch (e) { ok('La prueba de navegador se ha ejecutado entera', false, e.message); }
   c.cerrar(); if (servidor) servidor.close();
   console.log(errores ? `\n${errores} comprobaciones con fallos` : '\nTodas las comprobaciones de navegador correctas');
