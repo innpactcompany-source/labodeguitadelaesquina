@@ -421,6 +421,8 @@ main { display: block; }
 .pie__cols { display: grid; gap: 2rem; }
 .pie__logo img { width: 220px; height: auto; }
 .pie address { font-style: normal; margin: 1rem 0 0; }
+.pie__instagram { display: inline-flex; align-items: center; gap: .35rem; }
+.pie__instagram .icono { width: 20px; height: 20px; flex: none; }
 .pie ul { list-style: none; display: grid; gap: .1rem; }
 .pie li a, .pie__btn { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; padding-inline: .15rem; }
 .pie__btn { padding: 0; border: 0; background: none; color: var(--color-letra-oro); font: inherit; text-decoration: underline; text-underline-offset: .2em; cursor: pointer; }

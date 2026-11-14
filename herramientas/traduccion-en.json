@@ -1,6 +1,5 @@
 {
   "_nota": "Textos de la web en español y su traducción al inglés. «=» deja el texto igual. Lo usa herramientas/generar-ingles.js.",
-
   "La Bodeguita de la Esquina": "=",
   "Saltar al contenido": "Skip to content",
   "La Bodeguita de la Esquina, inicio": "La Bodeguita de la Esquina, home",
@@ -295,5 +294,7 @@
   "Para aceptar el mapa, pulsa «Cargar mapa» en su recuadro. Para retirar el permiso, o para darlo desde cualquier página, usa «Configurar cookies»: está en el pie de todas las páginas, en el menú del móvil y aquí:": "To accept the map, press “Load map” in its box. To withdraw your consent, or to give it from any page, use “Cookie settings”: it’s in the footer of every page, in the mobile menu and here:",
   "Si retiras el permiso, el mapa deja de cargarse. Las cookies que Google haya guardado mientras estaba activo puedes borrarlas desde los ajustes de tu navegador.": "If you withdraw your consent, the map stops loading. Any cookies Google stored while it was active can be deleted from your browser settings.",
   "Tu elección caduca a los 12 meses; después, el mapa vuelve a pedir permiso. Si tu navegador no permite guardar datos en local, no podremos recordarla y tratamos el mapa como no aceptado.": "Your choice expires after 12 months; after that, the map asks for your consent again. If your browser doesn’t allow data to be stored locally, we won’t be able to remember it and we’ll treat the map as not accepted.",
-  "Última actualización: 11 de noviembre de 2026": "Last updated: 11 November 2026"
+  "Última actualización: 11 de noviembre de 2026": "Last updated: 11 November 2026",
+  "Instagram de La Bodeguita": "La Bodeguita on Instagram",
+  "Instagram": "="
 }
