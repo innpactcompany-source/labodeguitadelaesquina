@@ -164,9 +164,9 @@ lista). Ahora está vacía: no la uses en esta sesión.
   - Cómo llegar: `https://www.google.com/maps/dir/?api=1&destination=La%20Bodeguita%20de%20la%20Esquina&destination_place_id=ChIJ10m2YSxHYA0R3iMZo7EyFII`
   - Dejar reseña: `https://search.google.com/local/writereview?placeid=ChIJ10m2YSxHYA0R3iMZo7EyFII`
   - Valoración: 4,7 de 5, consultada en octubre de 2026.
-- **Teléfono y WhatsApp:** 682 26 25 87.
-  - `tel:+34682262587`
-  - `https://wa.me/34682262587?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20La%20Bodeguita`
+- **Teléfono y WhatsApp:** 603 18 95 49.
+  - `tel:+34603189549`
+  - `https://wa.me/34603189549?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20La%20Bodeguita`
 - **Horario habitual:**
   - De lunes a jueves, de 8:00 a 24:00.
   - Viernes y sábado, de 8:00 a 2:00 de la madrugada siguiente.
@@ -358,7 +358,7 @@ Desplegables accesibles con `<details>` y `<summary>`, y JSON-LD `FAQPage` con e
    con precios en la web. Enlaza a /carta/.
 3. **¿Hace falta reservar?**
 
-   Si venís en grupo o tenéis cualquier duda, llamadnos o escribidnos por WhatsApp al 682 26 25 87.
+   Si venís en grupo o tenéis cualquier duda, llamadnos o escribidnos por WhatsApp al 603 18 95 49.
 4. **¿Tenéis terraza?**
 
    Sí, en la misma calle Benicarló.
@@ -607,7 +607,7 @@ RewriteRule ^ https://labodeguitadelaesquina.com%{REQUEST_URI} [R=301,L]
     "https://labodeguitadelaesquina.com/assets/img/bodeguita-terraza-1880.jpg",
     "https://labodeguitadelaesquina.com/assets/img/bodeguita-sala-2400.jpg"
   ],
-  "telephone": "+34 682 26 25 87",
+  "telephone": "+34 603 18 95 49",
   "priceRange": "€",
   "servesCuisine": "Española",
   "paymentAccepted": "Efectivo, tarjeta",

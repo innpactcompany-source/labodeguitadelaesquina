@@ -170,7 +170,7 @@ async function estadoBarra(t, visible) {
         if (e.method === 'Log.entryAdded' && ['error', 'warning'].includes(e.params.entry.level)) avisos.push(ruta + ': ' + e.params.entry.text);
         if (e.method === 'Network.requestWillBeSent' && !e.params.request.url.startsWith(base) && !e.params.request.url.startsWith('data:')) terceros.push(ruta + ': ' + new URL(e.params.request.url).host);
       }
-      const r = await t.ev(`({ fuentes: [...document.fonts].filter(f => f.status === 'loaded').length, iconos: performance.getEntriesByType('resource').some(r => /iconos\\.svg/.test(r.name)), wa: !!document.querySelector('a[href^="https://wa.me/34682262587?text="]') })`);
+      const r = await t.ev(`({ fuentes: [...document.fonts].filter(f => f.status === 'loaded').length, iconos: performance.getEntriesByType('resource').some(r => /iconos\\.svg/.test(r.name)), wa: !!document.querySelector('a[href^="https://wa.me/34603189549?text="]') })`);
       if (r.fuentes < 2 || !r.iconos || !r.wa) recursos.push(ruta);
       await t.cerrar();
     }

@@ -184,8 +184,8 @@ if (cierraDe('Friday').closes !== '02:00' || cierraDe('Saturday').closes !== '02
 if (cierraDe('Sunday').opens !== '12:00' || cierraDe('Sunday').closes !== '00:00') coh.push('domingo');
 if (cierraDe('Monday').opens !== '08:00' || cierraDe('Thursday').closes !== '00:00') coh.push('lunes-jueves');
 for (const h of [inicioHtml, llegarHtml]) if (!/8:00 – 24:00/.test(h) || !/8:00 – 2:00/.test(h) || !/12:00 – 24:00/.test(h)) coh.push('tabla de horario');
-for (const f of htmls.filter(f => !/404/.test(f))) { const t = leer(f); if (!t.includes('C/ Benicarló, 25') || !t.includes('682 26 25 87') || !t.includes('tel:+34682262587') || !/46020/.test(t)) coh.push('NAP en ' + rel(f)); }
-if (neg.telephone.replace(/\D/g, '') !== '34682262587' || neg.address.postalCode !== '46020' || !/Benicarló, 25/.test(neg.address.streetAddress) || neg.hasMenu !== 'https://labodeguitadelaesquina.com/carta/') coh.push('datos del negocio');
+for (const f of htmls.filter(f => !/404/.test(f))) { const t = leer(f); if (!t.includes('C/ Benicarló, 25') || !t.includes('603 18 95 49') || !t.includes('tel:+34603189549') || !/46020/.test(t)) coh.push('NAP en ' + rel(f)); }
+if (neg.telephone.replace(/\D/g, '') !== '34603189549' || neg.address.postalCode !== '46020' || !/Benicarló, 25/.test(neg.address.streetAddress) || neg.hasMenu !== 'https://labodeguitadelaesquina.com/carta/') coh.push('datos del negocio');
 for (const [nom, prec] of [['Tostada de tomate y jamón', '3,50'], ['Chivito Bodeguita', '7,00'], ['Bocadillo de entrecot', '9,50'], ['Café con leche', '1,90']]) { if (!new RegExp(nom + '</h3>[^]*?' + prec.replace(',', ',') + '&nbsp;€').test(inicioHtml) || itemsLD.find(i => i.name === nom).offers.price !== prec.replace(',', '.')) coh.push('precio en Inicio: ' + nom); }
 ok('19. JSON-LD del negocio coincide con el texto visible (dirección, teléfono, horario, precios) y lleva hasMenu', !coh.length, coh.join('; '));
 ok('20. Inicio sin «Dentro y fuera» y con la tarjeta de horario corta y cierta', !/Dentro y fuera/.test(inicioHtml) && /Abierto todos los días<\/h3><p>De lunes a jueves, de 8:00 a 24:00\. El fin de semana, consulta el horario\.<\/p>/.test(inicioHtml));
@@ -204,7 +204,7 @@ ok('25. Títulos legales numerados: cada número va en <span class="num"> y el t
 const cssBase = leer(path.join(WEB, 'assets/css/base.css'));
 ok('26. Menú: orden Inicio, Carta, Cómo llegar, Preguntas, Configurar cookies y después Llamar y WhatsApp; la página actual con aria-current', htmlsEs.every(f => { const t = leer(f); const n = t.indexOf('<nav class="nav"'); const menu = t.slice(n, t.indexOf('</nav>', n)); const orden = [...menu.matchAll(/<li[^>]*><a href="([^"]+)"[^>]*>([^<]*)<\/a><\/li>/g)].map(m => m[2]); const okOrden = orden.join('|') === 'Inicio|Carta|Cómo llegar|Preguntas frecuentes|Configurar cookies' && menu.indexOf('class="nav__movil"') > menu.indexOf('nav__cookies') && /<li class="nav__inicio"><a href="\/"/.test(menu); const actuales = (menu.match(/aria-current="page"/g) || []).length; const esperado = { 'index.html': 'Inicio', 'carta/index.html': 'Carta', 'como-llegar/index.html': 'Cómo llegar', 'preguntas-frecuentes/index.html': 'Preguntas frecuentes' }[rel(f)]; const okActual = esperado ? new RegExp('aria-current="page">' + esperado + '<').test(menu) && actuales === 1 : actuales === 0; return okOrden && okActual; }) && /rgba\(0, 0, 0, \.55\)/.test(cssBase) && /menu-abierto/.test(cssBase));
 // coherencia
-ok('Extra. Teléfono y dirección presentes en todas las páginas', htmls.every(f => /682 26 25 87/.test(leer(f)) && /Benicarló, 25/.test(leer(f))));
+ok('Extra. Teléfono y dirección presentes en todas las páginas', htmls.every(f => /603 18 95 49/.test(leer(f)) && /Benicarló, 25/.test(leer(f))));
 const verV = [...new Set(htmls.flatMap(f => [...leer(f).matchAll(/\?v=([\w.]+)/g)].map(m => m[1])))];
 ok('Extra. Un solo ?v= en todos los CSS y JS', verV.length === 1, verV.join(','));
 

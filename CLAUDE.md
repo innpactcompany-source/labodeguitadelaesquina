@@ -29,6 +29,16 @@ https://labodeguitadelaesquina.com. HTML, CSS y JS a mano, sin frameworks ni pas
   funcionamiento, cambia el texto en español y su traducción.
 - Solo castellano de España, tratando de tú. Las respuestas, los botones y los avisos hablan de tú; solo las preguntas del cliente al local de la FAQ conservan «¿Tenéis…?» y «¿Ponéis…?». El JSON-LD de la FAQ sale del mismo texto y debe coincidir palabra por palabra. Bizum solo aparece como «Bizum no» (FAQ).
 
+## Teléfono
+
+- Desde el 14-11-2026 el único teléfono de La Bodeguita es el de Samu, el encargado: **603 18 95 49**. Formatos:
+  visible `603 18 95 49`, enlace `tel:+34603189549`, WhatsApp `https://wa.me/34603189549?text=…` (con su mensaje
+  predefinido) y en el JSON-LD `"telephone": "+34 603 18 95 49"`. Ningún texto visible dice a quién se llama: «Llámanos»,
+  «Escríbenos». El anterior no debe volver a aparecer en ningún formato (está en `ANTIGUOS` de `pruebas/telefono.js`).
+- `node pruebas/telefono.js` lo comprueba: ningún archivo del repositorio tiene el número antiguo y el nuevo está en el
+  botón Llamar de la cabecera, la barra móvil, el pie, el JSON-LD y WhatsApp de las 15 páginas. Si el teléfono vuelve a
+  cambiar, añade el saliente a `ANTIGUOS` en ese script.
+
 ## Estructura
 
 - Páginas: `index.html`, `carta/`, `como-llegar/`, `preguntas-frecuentes/`, `aviso-legal/`,
