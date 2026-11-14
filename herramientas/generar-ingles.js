@@ -29,8 +29,8 @@ const RUTAS = {
   '/cookies/': '/en/cookies/'
 };
 const LEGALES = ['/aviso-legal/', '/privacidad/', '/cookies/'];
-// Locales del grupo con web en inglés: si el .htaccess tiene /ir/en/<slug>, las páginas en inglés enlazan ahí
-const IR_EN = new Set([...fs.readFileSync(path.join(WEB, '.htaccess'), 'utf8').matchAll(/^RewriteRule \^ir\/en\/([a-z0-9-]+)\/\?\$/gm)].map(m => m[1]));
+// Locales del grupo con web en inglés: si _redirects (Cloudflare Pages) tiene /ir/en/<slug>, las páginas en inglés enlazan ahí
+const IR_EN = new Set([...fs.readFileSync(path.join(WEB, '_redirects'), 'utf8').matchAll(/^\/ir\/en\/([a-z0-9-]+)\s/gm)].map(m => m[1]));
 // Anclas de las secciones de la carta
 const ANCLAS = { 'tostadas': 'toast', 'bocadillos': 'sandwiches', 'dulces-y-cafes': 'pastries-and-coffee' };
 const WHATSAPP_ES = 'text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20La%20Bodeguita';

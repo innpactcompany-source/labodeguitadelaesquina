@@ -1,0 +1,41 @@
+# labodeguitadelaesquina.com · cabeceras en Cloudflare Pages (equivalen a las de .htaccess)
+# La CSP es la misma que la del <meta> de cada página, más frame-ancestors (que en <meta> no vale).
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), autoplay=(), browsing-topics=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; font-src 'self'; frame-src https://www.google.com https://maps.google.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; frame-ancestors 'self'
+  Cache-Control: public, max-age=600, must-revalidate
+
+# Las URL *.pages.dev no se indexan (la canónica es labodeguitadelaesquina.com)
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+# CSS y JS se piden siempre con ?v=: un año e immutable. Fuentes: no cambian nunca.
+# «! Cache-Control» quita la de /* (si no, Pages juntaría los dos valores con una coma).
+/assets/css/*
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
+/assets/js/*
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
+/assets/fonts/*
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
+# Fotos, logos e iconos van sin ?v= y se sustituyen con el mismo nombre: una semana
+/assets/img/*
+  ! Cache-Control
+  Cache-Control: public, max-age=604800
+/assets/marca/*
+  ! Cache-Control
+  Cache-Control: public, max-age=604800
+/assets/iconos/*
+  ! Cache-Control
+  Cache-Control: public, max-age=604800
+/site.webmanifest
+  ! Cache-Control
+  Cache-Control: public, max-age=604800

@@ -4,7 +4,7 @@ const WEB = path.join(__dirname, '..', 'web');
 const KIT = path.join(__dirname, '..', 'kit-grupo-hostelero-friser');
 const walk = d => fs.readdirSync(d, { withFileTypes: true }).flatMap(e => e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]);
 const todos = walk(WEB);
-const textos = todos.filter(f => /\.(html|css|js|json|xml|txt|webmanifest|svg)$/.test(f) || f.endsWith('.htaccess'));
+const textos = todos.filter(f => /\.(html|css|js|json|xml|txt|webmanifest|svg)$/.test(f) || f.endsWith('.htaccess') || /_(redirects|headers)$/.test(f));
 const rel = f => path.relative(WEB, f).replace(/\\/g, '/');
 const leer = f => fs.readFileSync(f, 'utf8');
 // El archivo de verificación de Google Search Console (googleXXXX.html) no es una página de la web
@@ -82,7 +82,7 @@ ok('6b. Un solo h1 por página', !h1Mal.length, h1Mal.join(', '));
 ok('6c. Todas las <img> con alt', !altMal.length, altMal.join(', '));
 ok('6d. Sin enlaces ni recursos internos rotos', !rotos.length && !anclasMal.length, [...new Set([...rotos, ...anclasMal])].join('; '));
 // 7
-const need = ['robots.txt', 'sitemap.xml', 'site.webmanifest', '404.html', '.htaccess'];
+const need = ['robots.txt', 'sitemap.xml', 'site.webmanifest', '404.html', '.htaccess', '_redirects', '_headers'];
 const ht = leer(path.join(WEB, '.htaccess'));
 const reglas = ht.split('\n').filter(l => l.startsWith('RewriteRule ^'));
 const destinos = reglas.map(l => l.split(' ')[2]);
@@ -305,22 +305,21 @@ ok('S2. Imagen para redes en inglés (og-image-en.jpg, 1200 x 630, menos de 250 
   && Object.entries(PARES).every(([es, en]) => { const tEn = leer(pag(en)), tEs = leer(pag(es));
     return !tEn.includes(ogEs) && tEn.includes(`<meta property="og:image" content="https://labodeguitadelaesquina.com${ogEn}">`) && tEn.includes(`<meta name="twitter:image" content="https://labodeguitadelaesquina.com${ogEn}">`) && /<meta property="og:image:alt" content="[^"]*">/.test(tEn)
       && !tEs.includes(ogEn); }));
-// ---------- Páginas de redirección que se publican en GitHub Pages ----------
-const salidaPages = fs.mkdtempSync(path.join(require('os').tmpdir(), 'pages-'));
-let redirOk = false, redirDet = '';
-try {
-  require('child_process').execFileSync(process.execPath, [path.join(__dirname, '..', '.github', 'scripts', 'preparar-pages.js'), salidaPages], { env: { ...process.env, DOMINIO: 'labodeguitadelaesquina.com' }, stdio: 'pipe' });
-  const reglasHt = [...ht.replace(/\r/g, '').matchAll(/^RewriteRule \^([a-z0-9\/-]+?)\/\?\$ (\S+) \[R=30[12]/gm)].map(m => [m[1], m[2].replace(/&/g, '&amp;')]);
-  const malas = reglasHt.filter(([o, d]) => {
-    const f = path.join(salidaPages, o, 'index.html'); if (!fs.existsSync(f)) return true;
-    const t = leer(f), ingles = o.startsWith('ir/en/');
-    return !t.includes(`<meta http-equiv="refresh" content="0; url=${d}">`) || !t.includes('<meta name="robots" content="noindex">') || !t.includes(CSP_META)
-      || !t.includes(`href="${d}" lang="es">Si no se abre, pulsa aquí</a>`) || !t.includes(`href="${d}" lang="en">If it doesn’t open, tap here</a>`)
-      || !/<link rel="stylesheet" href="\/assets\/css\/base\.css\?v=/.test(t) || !t.includes(`<html lang="${ingles ? 'en' : 'es-ES'}">`);
-  }).map(r => r[0]);
-  redirOk = reglasHt.length >= 7 && !malas.length; redirDet = reglasHt.length + ' páginas' + (malas.length ? ' · mal: ' + malas.join(', ') : '');
-} catch (e) { redirDet = String(e.message).slice(0, 200); }
-fs.rmSync(salidaPages, { recursive: true, force: true });
-ok('R1. Cada redirección de /mesa, /barra e /ir/… sale como página con meta refresh, noindex, la CSP, los estilos y el enlace visible en español e inglés', redirOk, redirDet);
+// ---------- Cloudflare Pages: _redirects y _headers (equivalen al .htaccess) ----------
+const redir = leer(path.join(WEB, '_redirects')).replace(/\r/g, '');
+const lineasRedir = redir.split('\n').filter(l => l.trim() && !l.startsWith('#')).map(l => l.trim().split(/\s+/));
+const reglasHt = [...ht.replace(/\r/g, '').matchAll(/^RewriteRule \^([a-z0-9\/-]+?)\/\?\$ (\S+) \[R=302/gm)].map(m => ['/' + m[1], m[2].replace('https://labodeguitadelaesquina.com/', '/')]);
+const malasR = reglasHt.filter(([o, d]) => ![o, o + '/'].every(src => lineasRedir.some(([a, b, c]) => a === src && b === d && c === '302'))).map(r => r[0]);
+ok('R1. _redirects tiene cada redirección del .htaccess (/mesa, /barra, /ir/…) con y sin barra final, mismo destino y 302, y nada más', reglasHt.length >= 8 && !malasR.length
+  && lineasRedir.length === reglasHt.length * 2 && lineasRedir.every(l => l.length === 3 && l[2] === '302' && !/%20/.test(l[1])), `${reglasHt.length} reglas · ${lineasRedir.length} líneas` + (malasR.length ? ' · faltan: ' + malasR.join(', ') : ''));
+const cab = leer(path.join(WEB, '_headers')).replace(/\r/g, '');
+const valorHt = n => (ht.match(new RegExp(`Header always set ${n} "([^"]+)"`)) || [])[1];
+const bloque = p => (cab.split(/\n(?=\S)/).find(b => b.split('\n')[0] === p) || '');
+ok('R2. _headers: en /* la misma CSP, nosniff, X-Frame-Options, Referrer-Policy y Permissions-Policy que el .htaccess, HSTS y caché corta del HTML; un año a CSS, JS y fuentes; noindex en *.pages.dev',
+  ['Content-Security-Policy', 'X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy'].every(n => valorHt(n) && bloque('/*').includes(`  ${n}: ${valorHt(n)}`))
+  && bloque('/*').includes('  Strict-Transport-Security: max-age=31536000') && bloque('/*').includes('  Cache-Control: public, max-age=600, must-revalidate')
+  && ['/assets/css/*', '/assets/js/*', '/assets/fonts/*'].every(p => bloque(p).includes('  ! Cache-Control') && bloque(p).includes('  Cache-Control: public, max-age=31536000, immutable'))
+  && /https:\/\/:project\.pages\.dev\/\*\n  X-Robots-Tag: noindex/.test(cab)
+  && !fs.existsSync(path.join(__dirname, '..', '.github', 'scripts', 'preparar-pages.js')) === !fs.existsSync(path.join(__dirname, '..', '.github', 'workflows', 'pages.yml')));
 console.log(errores ? `\n${errores} comprobaciones con fallos` : '\nTodas las comprobaciones automáticas correctas');
 process.exit(errores ? 1 : 0);

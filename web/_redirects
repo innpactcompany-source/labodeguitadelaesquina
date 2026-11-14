@@ -1,0 +1,25 @@
+# labodeguitadelaesquina.com · redirecciones en Cloudflare Pages (equivalen a las de .htaccess)
+# Todas 302 a propósito: el destino puede cambiar sin reprogramar las pegatinas ni tocar el HTML.
+# Cada regla va dos veces, con y sin barra final. Espacios con «+», nunca %20.
+
+# Pegatinas NFC
+/mesa                       /carta/ 302
+/mesa/                      /carta/ 302
+/barra                      https://search.google.com/local/writereview?placeid=ChIJ10m2YSxHYA0R3iMZo7EyFII 302
+/barra/                     https://search.google.com/local/writereview?placeid=ChIJ10m2YSxHYA0R3iMZo7EyFII 302
+
+# Otros locales de Grupo Hostelero Friser. Las páginas en español enlazan a /ir/<local> y las inglesas a /ir/en/<local>
+# (lo decide herramientas/generar-ingles.js leyendo este archivo). Para cambiar un destino, edita sus dos líneas
+# aquí, en .htaccess y en las demás webs del grupo (kit-grupo-hostelero-friser/).
+/ir/pub-colonial            https://pubcolonial.com/ 302
+/ir/pub-colonial/           https://pubcolonial.com/ 302
+/ir/en/pub-colonial         https://pubcolonial.com/en/ 302
+/ir/en/pub-colonial/        https://pubcolonial.com/en/ 302
+/ir/taberna-asturiana       https://tabernaasturiana.com/ 302
+/ir/taberna-asturiana/      https://tabernaasturiana.com/ 302
+/ir/en/taberna-asturiana    https://tabernaasturiana.com/en/ 302
+/ir/en/taberna-asturiana/   https://tabernaasturiana.com/en/ 302
+/ir/excalibur               https://excaliburirishpub.com/ 302
+/ir/excalibur/              https://excaliburirishpub.com/ 302
+/ir/en/excalibur            https://excaliburirishpub.com/en/ 302
+/ir/en/excalibur/           https://excaliburirishpub.com/en/ 302
